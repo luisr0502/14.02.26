@@ -3,17 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Feliz San Valentín 💛</title>
+
+<!-- ICONO CORAZÓN -->
+<link rel="icon" type="image/png" href="corazon.png">
+
+<!-- FUENTE ROMÁNTICA -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     overflow: hidden;
     background: linear-gradient(135deg, #ffd6e8, #fff3b0);
 }
 
-/* PANTALLA 404 */
+/* 404 */
 #errorScreen {
     position: fixed;
     width: 100%;
@@ -43,7 +50,7 @@ body {
     cursor: pointer;
 }
 
-/* CONTENIDO PRINCIPAL */
+/* CONTENIDO */
 .main {
     display: none;
     width: 100%;
@@ -51,14 +58,14 @@ body {
     position: relative;
 }
 
-/* CUADRO CENTRAL MEDIANO */
+/* CUADRO CENTRAL */
 .container {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 350px;          /* tamaño mediano */
-    padding: 20px;
+    width: 360px;
+    padding: 25px;
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
@@ -66,35 +73,37 @@ body {
     z-index: 5;
 }
 
+/* TÍTULO NUEVA FUENTE */
 h1 {
-    color: #ff6b9d;
-    font-size: 22px;
+    font-family: 'Great Vibes', cursive;
+    color: #ff4f87;
+    font-size: 36px;
     margin-bottom: 15px;
 }
 
-/* VIDEO MÁS PEQUEÑO */
+/* VIDEO */
 video {
-    width: 250px;
+    width: 240px;
     border-radius: 15px;
 }
 
 /* FRASES */
 #mensaje {
     margin-top: 15px;
-    font-weight: bold;
-    min-height: 50px;
+    font-weight: 400;
+    min-height: 70px;
     font-size: 14px;
 }
 
-/* FOTOS LATERALES */
+/* FOTOS */
 .foto {
     position: absolute;
-    width: 140px;
-    height: 180px;
+    width: 150px;
+    height: 200px;
     object-fit: cover;
     border-radius: 15px;
     opacity: 0;
-    animation: flotar 5s ease forwards;
+    animation: flotar 9s ease forwards;
     pointer-events: auto;
 }
 
@@ -102,7 +111,7 @@ video {
     0% { opacity: 0; transform: translateY(0px); }
     15% { opacity: 1; }
     85% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(-150px); }
+    100% { opacity: 0; transform: translateY(-80px); }
 }
 
 /* EMOJIS */
@@ -123,17 +132,14 @@ video {
 
 <body>
 
-<!-- 404 -->
 <div id="errorScreen">
-    <h1>404 - Página No Encontrada</h1>
+    <h1 style="font-family:Poppins;">404 - Página No Encontrada</h1>
     <p>Introduce la contraseña 💛</p>
     <input type="password" id="password">
     <button onclick="checkPassword()">Entrar</button>
 </div>
 
-<!-- CONTENIDO -->
 <div class="main" id="mainContent">
-
     <div class="container">
         <h1>Feliz San Valentín 💛</h1>
 
@@ -143,7 +149,6 @@ video {
 
         <p id="mensaje"></p>
     </div>
-
 </div>
 
 <audio id="musica" loop>
@@ -154,8 +159,7 @@ video {
 
 /* CONTRASEÑA */
 function checkPassword(){
-    const pass = document.getElementById("password").value;
-    if(pass === "221124"){
+    if(document.getElementById("password").value === "221124"){
         document.getElementById("errorScreen").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
         document.getElementById("musica").play();
@@ -165,27 +169,72 @@ function checkPassword(){
     }
 }
 
-/* FRASES */
-const frases = Array.from({length:100}, (_,i)=> 
-`Razón ${i+1} por la que me haces feliz 💛`
-);
+/* 50 FRASES ELABORADAS */
+const frases = [
+"Eres mi lugar seguro incluso en los días más difíciles 💛",
+"Tu risa tiene el poder de arreglar cualquier momento gris ✨",
+"Contigo aprendí que el amor se siente como hogar 🏡",
+"Eres esa casualidad que agradezco todos los días 💫",
+"Tu mirada tiene algo que calma mi mundo 🌎",
+"Me haces feliz de maneras que ni sabía que necesitaba 🥰",
+"Tu abrazo es mi sitio favorito 🤗",
+"Cuando estoy contigo, todo tiene más sentido 💕",
+"Tu sonrisa ilumina más que cualquier sol ☀️",
+"Eres la mejor parte de mis días 💛",
+"Me inspiras a ser mejor persona cada día ✨",
+"Tu ternura cambia completamente mi mundo 💖",
+"Eres mi pensamiento favorito antes de dormir 🌙",
+"Contigo hasta el silencio es bonito 💫",
+"Eres mi mejor coincidencia 🫶",
+"Tu cariño me hace sentir invencible 💛",
+"Estar contigo siempre vale la pena 💕",
+"Eres mi calma en medio del caos 🌊",
+"Tu voz es mi sonido favorito 🎶",
+"Me haces creer en cosas bonitas 💖",
+"Tu presencia transforma cualquier lugar 🏡",
+"Eres mi sonrisa involuntaria 😌",
+"Contigo todo fluye naturalmente 💫",
+"Tu amor es el mejor regalo 🎁",
+"Eres mi motivación diaria ✨",
+"Me haces sentir especial sin esfuerzo 💛",
+"Tu compañía es mi paz 🕊️",
+"Eres mi historia favorita 📖",
+"Tu forma de ser me enamora cada día 💕",
+"Contigo aprendí a amar sin miedo 💫",
+"Eres el detalle más bonito de mi vida 💖",
+"Tu energía ilumina todo a tu alrededor ✨",
+"Eres mi aventura favorita 🌍",
+"Tu sonrisa es mi debilidad 😍",
+"Me haces sentir en casa 🏡",
+"Eres mi mejor decisión 💛",
+"Tu ternura es infinita 💕",
+"Contigo la vida es más dulce 🍯",
+"Eres mi persona favorita 🫶",
+"Tu forma de querer es única 💫",
+"Me haces sentir completo 💖",
+"Eres mi alegría constante 😊",
+"Tu amor me da fuerza 💪",
+"Contigo todo es más bonito ✨",
+"Eres mi pensamiento feliz 💛",
+"Tu abrazo lo cura todo 🤗",
+"Eres el mejor capítulo de mi vida 📖",
+"Me haces sentir afortunado 💕",
+"Eres mi felicidad diaria 💫",
+"Y te volvería a elegir siempre 💖"
+];
 
 function mostrarFrase(){
     const random = Math.floor(Math.random()*frases.length);
     document.getElementById("mensaje").innerText = frases[random];
-    setTimeout(mostrarFrase, 4000);
+    setTimeout(mostrarFrase, 5000);
 }
 
-/* FOTOS 1.jpeg, 2.jpeg, etc */
-const imagenes = [
-"1.jpeg","2.jpeg","3.jpeg","4.jpeg",
-"5.jpeg","6.jpeg","7.jpeg","8.jpeg"
-];
-
+/* FOTOS */
+const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg","7.jpeg","8.jpeg"];
 let fotosActivas = [];
 
 function crearFoto(){
-    if(fotosActivas.length >= 5) return;
+    if(fotosActivas.length >= 4) return;
 
     let imgSrc;
     do {
@@ -201,16 +250,15 @@ function crearFoto(){
     const ladoIzq = Math.random() < 0.5;
 
     if(ladoIzq){
-        img.style.left = (Math.random()*25) + "vw";
+        img.style.left = (Math.random()*20) + "vw";
     } else {
-        img.style.right = (Math.random()*25) + "vw";
+        img.style.right = (Math.random()*20) + "vw";
     }
 
     img.style.top = (Math.random()*60 + 25) + "vh";
 
     document.body.appendChild(img);
 
-    /* EMOJIS */
     img.addEventListener("mousemove", function(e){
         const emojis = ["💛","😍","🥰","💖","✨"];
         const emoji = document.createElement("div");
@@ -225,10 +273,10 @@ function crearFoto(){
     setTimeout(()=>{
         img.remove();
         fotosActivas = fotosActivas.filter(f=>f!==imgSrc);
-    },5000);
+    },9000);
 }
 
-setInterval(crearFoto, 1200);
+setInterval(crearFoto, 2500);
 
 </script>
 
