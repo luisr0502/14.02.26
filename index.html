@@ -201,81 +201,57 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* EMOJI CONTROL */
-let lastEmojiTime = 0;
-function crearEmoji(e){
-    const now = Date.now();
-    if(now - lastEmojiTime < 150) return; // solo 1 cada 150ms
-    lastEmojiTime = now;
+// Esperar a que cargue el DOM
+document.addEventListener("DOMContentLoaded", () => {
 
-    const emojis = ["💛","💭","✨","🌸","💖","🫶","🌼"];
-    const emoji = document.createElement("div");
-    emoji.classList.add("emoji");
-    emoji.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-    emoji.style.left = e.pageX + "px";
-    emoji.style.top = e.pageY + "px";
-    document.body.appendChild(emoji);
-    setTimeout(()=>emoji.remove(),1000);
-}
+  const btnFormulario = document.querySelector("button:nth-of-type(1)");
+  const btnVerNotas = document.querySelector("button:nth-of-type(2)");
+  const btnGuardar = document.querySelector("#formulario button");
 
-document.addEventListener("mousemove", crearEmoji);
+  btnFormulario.addEventListener("click", () => {
+    document.getElementById("formulario").style.display = "block";
+  });
 
-/* DIARIO */
+  btnGuardar.addEventListener("click", async () => {
 
-window.abrirDiario = function(){
-    document.getElementById("diarioModal").style.display="flex";
-}
+    const texto = document.getElementById("texto").value;
 
-window.cerrarDiario = function(){
-    document.getElementById("diarioModal").style.display="none";
-}
+    if(texto.trim() === "") return;
 
-window.guardarNota = async function(){
-    try{
-        const texto = document.getElementById("textoNota").value;
-        if(!texto) return;
+    await addDoc(collection(db, "notas"), {
+      texto: texto,
+      fecha: new Date()
+    });
 
-        await addDoc(collection(db,"notas"),{
-            texto:texto,
-            fecha:new Date()
-        });
+    alert("Guardado 💖");
+    document.getElementById("texto").value = "";
+  });
 
-        document.getElementById("textoNota").value="";
-        mostrarNotas();
-    }catch(error){
-        console.error("ERROR GUARDANDO:", error);
-        alert("Error guardando nota. Mira la consola.");
-    }
-}
+  btnVerNotas.addEventListener("click", async () => {
 
-window.verNotas = function(){
-    abrirDiario();
-    mostrarNotas();
-}
+    const querySnapshot = await getDocs(collection(db, "notas"));
+    const contenedor = document.getElementById("notas");
+    contenedor.innerHTML = "";
 
-async function mostrarNotas(){
-    try{
-        const lista = document.getElementById("listaNotas");
-        lista.innerHTML="";
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const fecha = new Date(data.fecha.seconds * 1000);
 
-        const querySnapshot = await getDocs(collection(db,"notas"));
+      contenedor.innerHTML += `
+        <div class="note">
+          <strong>${fecha.toLocaleString()}</strong>
+          <p>${data.texto}</p>
+        </div>
+      `;
+    });
 
-        querySnapshot.forEach(doc=>{
-            const data = doc.data();
-            const fecha = new Date(data.fecha.seconds*1000).toLocaleString();
+  });
 
-            const div=document.createElement("div");
-            div.classList.add("nota");
-            div.innerHTML=`<strong>${fecha}</strong><br>${data.texto}`;
-            lista.appendChild(div);
-        });
-    }catch(error){
-        console.error("ERROR LEYENDO:", error);
-        alert("Error leyendo notas. Mira la consola.");
-    }
-}
+});
 
 </script>
 
+
 </body>
 </html>
+
