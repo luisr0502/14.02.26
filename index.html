@@ -49,36 +49,32 @@ body {
     width: 100%;
     height: 100vh;
     position: relative;
-    overflow: hidden;
 }
 
-/* CUADRO CENTRAL */
+/* CUADRO CENTRAL MEDIANO */
 .container {
-    position: relative;
-    z-index: 5;
-    background: white;
-    width: 420px;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    text-align: center;
-}
-
-.center-wrapper {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 350px;          /* tamaño mediano */
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    text-align: center;
+    z-index: 5;
 }
 
 h1 {
     color: #ff6b9d;
-    margin-bottom: 10px;
+    font-size: 22px;
+    margin-bottom: 15px;
 }
 
-/* VIDEO */
+/* VIDEO MÁS PEQUEÑO */
 video {
-    width: 100%;
+    width: 250px;
     border-radius: 15px;
 }
 
@@ -87,17 +83,18 @@ video {
     margin-top: 15px;
     font-weight: bold;
     min-height: 50px;
+    font-size: 14px;
 }
 
 /* FOTOS LATERALES */
 .foto {
     position: absolute;
-    max-width: 180px;
-    max-height: 220px;
-    border-radius: 15px;
+    width: 140px;
+    height: 180px;
     object-fit: cover;
+    border-radius: 15px;
     opacity: 0;
-    animation: flotar 6s ease forwards;
+    animation: flotar 5s ease forwards;
     pointer-events: auto;
 }
 
@@ -105,14 +102,15 @@ video {
     0% { opacity: 0; transform: translateY(0px); }
     15% { opacity: 1; }
     85% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(-120px); }
+    100% { opacity: 0; transform: translateY(-150px); }
 }
 
 /* EMOJIS */
 .emoji {
     position: absolute;
-    font-size: 22px;
+    font-size: 20px;
     animation: emojiFloat 1s ease-out forwards;
+    pointer-events: none;
 }
 
 @keyframes emojiFloat {
@@ -125,7 +123,7 @@ video {
 
 <body>
 
-<!-- PANTALLA 404 -->
+<!-- 404 -->
 <div id="errorScreen">
     <h1>404 - Página No Encontrada</h1>
     <p>Introduce la contraseña 💛</p>
@@ -136,16 +134,14 @@ video {
 <!-- CONTENIDO -->
 <div class="main" id="mainContent">
 
-    <div class="center-wrapper">
-        <div class="container">
-            <h1>Feliz San Valentín 💛</h1>
+    <div class="container">
+        <h1>Feliz San Valentín 💛</h1>
 
-            <video autoplay loop muted playsinline>
-                <source src="video.mp4" type="video/mp4">
-            </video>
+        <video autoplay loop muted playsinline>
+            <source src="video.mp4" type="video/mp4">
+        </video>
 
-            <p id="mensaje"></p>
-        </div>
+        <p id="mensaje"></p>
     </div>
 
 </div>
@@ -169,9 +165,9 @@ function checkPassword(){
     }
 }
 
-/* 100 FRASES */
+/* FRASES */
 const frases = Array.from({length:100}, (_,i)=> 
-`Razón #${i+1} por la que te quiero 💛`
+`Razón ${i+1} por la que me haces feliz 💛`
 );
 
 function mostrarFrase(){
@@ -180,16 +176,16 @@ function mostrarFrase(){
     setTimeout(mostrarFrase, 4000);
 }
 
-/* FOTOS RANDOM DISPERSAS */
+/* FOTOS 1.jpeg, 2.jpeg, etc */
 const imagenes = [
-"foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg",
-"foto5.jpg","foto6.jpg","foto7.jpg"
+"1.jpeg","2.jpeg","3.jpeg","4.jpeg",
+"5.jpeg","6.jpeg","7.jpeg","8.jpeg"
 ];
 
 let fotosActivas = [];
 
 function crearFoto(){
-    if(fotosActivas.length >= 6) return;
+    if(fotosActivas.length >= 5) return;
 
     let imgSrc;
     do {
@@ -202,19 +198,19 @@ function crearFoto(){
     img.src = imgSrc;
     img.classList.add("foto");
 
-    const lado = Math.random() < 0.5 ? "izq" : "der";
+    const ladoIzq = Math.random() < 0.5;
 
-    if(lado === "izq"){
-        img.style.left = Math.random()*20 + "vw";
+    if(ladoIzq){
+        img.style.left = (Math.random()*25) + "vw";
     } else {
-        img.style.right = Math.random()*20 + "vw";
+        img.style.right = (Math.random()*25) + "vw";
     }
 
-    img.style.top = (Math.random()*70 + 20) + "vh";
+    img.style.top = (Math.random()*60 + 25) + "vh";
 
     document.body.appendChild(img);
 
-    /* EMOJIS AL PASAR */
+    /* EMOJIS */
     img.addEventListener("mousemove", function(e){
         const emojis = ["💛","😍","🥰","💖","✨"];
         const emoji = document.createElement("div");
@@ -229,10 +225,10 @@ function crearFoto(){
     setTimeout(()=>{
         img.remove();
         fotosActivas = fotosActivas.filter(f=>f!==imgSrc);
-    },6000);
+    },5000);
 }
 
-setInterval(crearFoto, 1500);
+setInterval(crearFoto, 1200);
 
 </script>
 
