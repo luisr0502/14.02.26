@@ -6,157 +6,272 @@
 <title>Para Ti 💛</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ffd6e8, #fff3b0);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    text-align: center;
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:black;
+overflow:hidden;
 }
 
-.container {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    max-width: 420px;
-    width: 90%;
+/* ---------- 404 ---------- */
+#intro{
+position:fixed;
+inset:0;
+background:black;
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:10;
+text-align:center;
 }
 
-h1 {
-    color: #ff6b9d;
+input{
+padding:10px;
+border-radius:20px;
+border:none;
+text-align:center;
+margin-top:10px;
 }
 
-.slideshow {
-    position: relative;
-    margin: 20px 0;
+button{
+margin-top:10px;
+padding:10px 20px;
+border:none;
+border-radius:20px;
+background:#ff6b9d;
+color:white;
+cursor:pointer;
 }
 
-.slideshow img {
-    width: 100%;
-    border-radius: 15px;
-    transition: opacity 0.5s ease-in-out;
+/* ---------- MAIN ---------- */
+#main{
+display:none;
+position:relative;
+min-height:100vh;
+background:linear-gradient(135deg,#ffd6e8,#fff3b0);
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+padding:20px;
 }
 
-.emoji {
-    position: absolute;
-    font-size: 24px;
-    animation: float 1s ease-out forwards;
+video{
+width:300px;
+border-radius:20px;
+margin-bottom:20px;
 }
 
-@keyframes float {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-40px); }
+#frase{
+font-weight:bold;
+max-width:400px;
 }
 
-.video-space {
-    margin-top: 15px;
+/* ---------- FOTOS FLOAT ---------- */
+.floatImg{
+position:fixed;
+width:140px;
+height:180px;
+object-fit:cover;
+border-radius:15px;
+opacity:0;
+animation:floatAnim linear forwards;
 }
 
-button {
-    margin-top: 20px;
-    padding: 12px 20px;
-    border: none;
-    background: #ff6b9d;
-    color: white;
-    font-size: 16px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.3s;
+@keyframes floatAnim{
+0%{opacity:0; transform:translateY(20px);}
+20%{opacity:0.8;}
+80%{opacity:0.8;}
+100%{opacity:0; transform:translateY(-40px);}
 }
 
-button:hover {
-    background: #ff4f87;
+.fadeOut{
+animation:fadeOut 1s forwards;
 }
 
-#mensaje {
-    margin-top: 15px;
-    color: #444;
-    font-weight: bold;
+@keyframes fadeOut{
+to{opacity:0; visibility:hidden;}
 }
+
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h1>Para Ti 💛</h1>
-
-    <!-- SLIDESHOW -->
-    <div class="slideshow" id="slideshow">
-        <img id="slide" src="foto1.jpg" alt="Recuerdos">
-    </div>
-
-    <!-- VIDEO -->
-    <div class="video-space">
-        <video width="100%" controls>
-            <source src="tuvideo.mp4" type="video/mp4">
-        </video>
-    </div>
-
-    <button onclick="cambiarFrase(); reproducirMusica()">Tócame 💛</button>
-
-    <p id="mensaje"></p>
+<!-- 404 -->
+<div id="intro">
+<h1>Error 404</h1>
+<p>Página no encontrada</p>
+<input type="password" id="pass" placeholder="Contraseña">
+<button onclick="check()">Entrar</button>
+<p id="error" style="color:#ff6b9d;"></p>
 </div>
 
-<!-- AUDIO -->
-<audio id="musica" loop>
-    <source src="musica.mp3" type="audio/mpeg">
+<!-- MAIN -->
+<div id="main">
+<video autoplay muted loop playsinline>
+<source src="video.mp4" type="video/mp4">
+</video>
+
+<button onclick="cambiarFrase()">Tócame 💛</button>
+<p id="frase"></p>
+</div>
+
+<audio id="music" loop>
+<source src="musica.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-// --- SLIDESHOW ---
-const imagenes = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
-let index = 0;
-
-setInterval(() => {
-    index = (index + 1) % imagenes.length;
-    document.getElementById("slide").src = imagenes[index];
-}, 3000);
-
-// --- EMOJIS AL PASAR EL MOUSE ---
-const emojis = ["💛","😍","🥰","💖","✨"];
-let emojiIndex = 0;
-
-document.getElementById("slideshow").addEventListener("mousemove", function(e){
-    const emoji = document.createElement("div");
-    emoji.classList.add("emoji");
-    emoji.innerText = emojis[emojiIndex];
-
-    emoji.style.left = e.offsetX + "px";
-    emoji.style.top = e.offsetY + "px";
-
-    this.appendChild(emoji);
-
-    setTimeout(() => emoji.remove(), 1000);
-
-    emojiIndex = (emojiIndex + 1) % emojis.length;
-});
-
-// --- FRASES CAMBIANTES ---
-const frases = [
-"Gracias por existir 💛",
-"Eres mi lugar favorito 🏡",
-"Quiero abrazarte siempre 🤗",
-"Contigo todo es más bonito ✨",
-"Eres mi casualidad favorita 💫"
-];
-
-let fraseIndex = 0;
-
-function cambiarFrase() {
-    document.getElementById("mensaje").innerText = frases[fraseIndex];
-    fraseIndex = (fraseIndex + 1) % frases.length;
+/* ---------- CONTRASEÑA ---------- */
+function check(){
+if(document.getElementById("pass").value==="221124"){
+document.getElementById("intro").classList.add("fadeOut");
+setTimeout(()=>{
+document.getElementById("intro").style.display="none";
+document.getElementById("main").style.display="flex";
+document.getElementById("music").play();
+startFloating();
+},1000);
+}else{
+document.getElementById("error").innerText="Contraseña incorrecta 💔";
+}
 }
 
-// --- MUSICA ---
-function reproducirMusica(){
-    const musica = document.getElementById("musica");
-    musica.play();
+/* ---------- FRASES (100) ---------- */
+const frases=[
+"Eres mi lugar favorito 💛",
+"Contigo todo es más bonito ✨",
+"Gracias por existir 💫",
+"Quiero abrazarte siempre 🤗",
+"Eres mi casualidad favorita",
+"Tu sonrisa cambia mi día",
+"Me encanta caminar contigo",
+"Mi paz tiene tu nombre",
+"Siempre tú",
+"Te elegiría mil veces",
+"Eres mi hogar",
+"Mi mundo mejora contigo",
+"Tu abrazo es mi refugio",
+"Mi pensamiento favorito eres tú",
+"Nuestro tiempo es mágico",
+"Me haces feliz sin esfuerzo",
+"Eres mi mejor historia",
+"Me encanta tu forma de ser",
+"Tu risa es mi sonido favorito",
+"Eres mi momento favorito",
+"Siempre quiero más contigo",
+"Gracias por tanto",
+"Me haces sentir completo",
+"Todo tiene sentido contigo",
+"Eres mi calma",
+"Eres mi alegría diaria",
+"Mi persona favorita",
+"Contigo soy mejor",
+"Eres mi coincidencia perfecta",
+"Mi abrazo pendiente",
+"Nuestro amor es suave",
+"Me encanta tu mirada",
+"Eres mi prioridad",
+"Te admiro mucho",
+"Eres especial",
+"Mi corazón sonríe contigo",
+"Siempre contigo",
+"Nuestro mundo es bonito",
+"Eres mi destino",
+"Gracias por quedarte",
+"Tu voz me tranquiliza",
+"Eres mi inspiración",
+"Contigo todo fluye",
+"Me haces sentir seguro",
+"Siempre me eliges",
+"Eres mi alegría",
+"Nuestro amor es real",
+"Eres increíble",
+"Te pienso siempre",
+"Mi lugar favorito es contigo",
+"Me haces mejor persona",
+"Eres mi paz mental",
+"Tu energía es hermosa",
+"Me encanta tu esencia",
+"Siempre tú y yo",
+"Mi compañía favorita",
+"Eres mi sol",
+"Mi sonrisa tiene tu nombre",
+"Gracias por tu amor",
+"Siempre juntos",
+"Eres mi apoyo",
+"Mi corazón es tuyo",
+"Eres lo mejor",
+"Contigo es diferente",
+"Nuestro amor es único",
+"Eres mi felicidad",
+"Mi sueño favorito",
+"Me encanta abrazarte",
+"Eres mi aventura",
+"Siempre a tu lado",
+"Mi persona segura",
+"Me encantas",
+"Eres mi forever",
+"Mi vida contigo es mejor",
+"Nuestro momento es ahora",
+"Eres mi casualidad más bonita",
+"Mi destino favorito",
+"Eres mi mejor elección",
+"Siempre tú primero",
+"Mi calma favorita",
+"Me encanta tu compañía",
+"Eres mi alegría eterna",
+"Contigo todo es luz",
+"Mi pensamiento constante",
+"Eres mi sonrisa diaria",
+"Siempre te elijo",
+"Mi persona favorita en el mundo",
+"Nuestro amor es suave y fuerte",
+"Gracias por tanto amor",
+"Eres mi hogar seguro",
+"Siempre quiero más momentos contigo",
+"Mi historia favorita es la nuestra",
+"Eres mi mejor decisión",
+"Mi abrazo eterno",
+"Contigo todo vale la pena",
+"Eres mi felicidad constante",
+"Siempre mi persona"
+];
+
+let i=0;
+function cambiarFrase(){
+document.getElementById("frase").innerText=frases[i];
+i=(i+1)%frases.length;
+}
+
+/* ---------- FOTOS RANDOM ---------- */
+const totalFotos=15;
+
+function random(min,max){
+return Math.random()*(max-min)+min;
+}
+
+function crearFoto(){
+let img=document.createElement("img");
+let num=Math.floor(Math.random()*totalFotos)+1;
+img.src=num+".jpeg";
+img.className="floatImg";
+
+let lado=Math.random()<0.5?"left":"right";
+img.style[lado]=random(0,10)+"%";
+img.style.top=random(10,70)+"%";
+img.style.animationDuration=random(6,10)+"s";
+
+document.body.appendChild(img);
+
+setTimeout(()=>img.remove(),10000);
+}
+
+function startFloating(){
+setInterval(crearFoto,1500);
 }
 
 </script>
