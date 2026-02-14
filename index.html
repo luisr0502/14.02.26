@@ -6,160 +6,303 @@
 <title>Para Ti 💛</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ffd6e8, #fff3b0);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    text-align: center;
+body{
+margin:0;
+font-family:Arial, sans-serif;
+overflow-x:hidden;
+background:black;
+color:white;
 }
 
-.container {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    max-width: 420px;
-    width: 90%;
+/* ---------- INTRO ---------- */
+#introScreen{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+text-align:center;
 }
 
-h1 {
-    color: #ff6b9d;
+#introVideo{
+position:absolute;
+width:100%;
+max-height:70%;
+opacity:0;
+animation:fadeInVideo 2s forwards;
 }
 
-.slideshow {
-    position: relative;
-    margin: 20px 0;
+@keyframes fadeInVideo{
+to{opacity:1;}
 }
 
-.slideshow img {
-    width: 100%;
-    border-radius: 15px;
-    transition: opacity 0.5s ease-in-out;
+#passwordBox{
+display:none;
+position:absolute;
+bottom:15%;
 }
 
-.emoji {
-    position: absolute;
-    font-size: 24px;
-    animation: float 1s ease-out forwards;
+#introScreen.fadeOut{
+animation:fadeOut 1s forwards;
 }
 
-@keyframes float {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-40px); }
+@keyframes fadeOut{
+to{opacity:0;visibility:hidden;}
 }
 
-.video-space {
-    margin-top: 15px;
+/* ---------- CARTA ---------- */
+#coverLetter{
+position:fixed;
+inset:0;
+background:linear-gradient(135deg,#ffd6e8,#fff3b0);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9998;
+color:black;
+text-align:center;
 }
 
-button {
-    margin-top: 20px;
-    padding: 12px 20px;
-    border: none;
-    background: #ff6b9d;
-    color: white;
-    font-size: 16px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.3s;
+.letter{
+background:white;
+padding:30px;
+border-radius:20px;
+cursor:pointer;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
-button:hover {
-    background: #ff4f87;
+/* ---------- FONDO FOTOS ---------- */
+.floating{
+position:fixed;
+width:120px;
+opacity:0.15;
+animation:floatUp linear infinite;
 }
 
-#mensaje {
-    margin-top: 15px;
-    color: #444;
-    font-weight: bold;
+@keyframes floatUp{
+from{transform:translateY(100vh);}
+to{transform:translateY(-150px);}
 }
+
+/* ---------- CONTENIDO ---------- */
+#mainContent{
+display:none;
+background:linear-gradient(135deg,#ffd6e8,#fff3b0);
+min-height:100vh;
+color:black;
+padding:20px;
+}
+
+.layout{
+display:flex;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.left,.right{
+flex:1;
+min-width:300px;
+}
+
+.slideshow img{
+width:100%;
+height:300px;
+object-fit:cover;
+border-radius:15px;
+transition:opacity 0.5s ease;
+}
+
+button{
+padding:8px 15px;
+border:none;
+border-radius:20px;
+background:#ff6b9d;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+/* ---------- JUEGOS ---------- */
+.gameBox{
+background:white;
+padding:15px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+#heartGame span{
+position:absolute;
+font-size:24px;
+cursor:pointer;
+}
+
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h1>Para Ti 💛</h1>
+<!-- INTRO -->
+<div id="introScreen">
+<h1>Error 404</h1>
+<p>Página no encontrada...</p>
 
-    <!-- SLIDESHOW -->
-    <div class="slideshow" id="slideshow">
-        <img id="slide" src="foto1.jpg" alt="Recuerdos">
-    </div>
+<video id="introVideo" autoplay muted playsinline>
+<source src="intro.mp4" type="video/mp4">
+</video>
 
-    <!-- VIDEO -->
-    <div class="video-space">
-        <video width="100%" controls>
-            <source src="tuvideo.mp4" type="video/mp4">
-        </video>
-    </div>
-
-    <button onclick="cambiarFrase(); reproducirMusica()">Tócame 💛</button>
-
-    <p id="mensaje"></p>
+<div id="passwordBox">
+<p>Ups… necesitas la contraseña 💛</p>
+<input type="password" id="pass">
+<button onclick="checkPassword()">Entrar</button>
+<p id="errorMsg"></p>
+</div>
 </div>
 
-<!-- AUDIO -->
-<audio id="musica" loop>
-    <source src="musica.mp3" type="audio/mpeg">
+<!-- CARTA -->
+<div id="coverLetter">
+<div class="letter" onclick="startSite()">
+<h2>Antes de entrar…</h2>
+<p>Toca aquí 💛</p>
+</div>
+</div>
+
+<!-- CONTENIDO -->
+<div id="mainContent">
+<h1 style="text-align:center;">Para Ti 💛</h1>
+
+<div class="layout">
+
+<div class="left">
+
+<div class="slideshow">
+<img id="slide" src="1.jpeg">
+</div>
+
+<video width="100%" controls>
+<source src="tuvideo.mp4" type="video/mp4">
+</video>
+
+<button onclick="changePhrase()">Tócame 💛</button>
+<p id="phrase"></p>
+
+</div>
+
+<div class="right">
+
+<div class="gameBox">
+<h3>Atrapa el corazón 💛</h3>
+<div id="heartGame" style="position:relative;height:150px;"></div>
+</div>
+
+<div class="gameBox">
+<h3>Pingüino salta 🐧</h3>
+<button onclick="jump()">Saltar</button>
+<p id="jumpCount">Saltos: 0</p>
+</div>
+
+<div class="gameBox">
+<h3>Memoria 🎯</h3>
+<button onclick="memoryGame()">Revelar sorpresa</button>
+<p id="memoryResult"></p>
+</div>
+
+<div class="gameBox">
+<h3>Mini Trivia 💬</h3>
+<p>¿Cuál fue nuestro primer plan juntos?</p>
+<p>¿Qué canción nos representa?</p>
+<p>¿Cuál fue el momento más inesperado?</p>
+</div>
+
+</div>
+</div>
+</div>
+
+<audio id="music" loop>
+<source src="musica.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-// --- SLIDESHOW ---
-const imagenes = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
-let index = 0;
+/* INTRO */
+document.getElementById("introVideo").onended=function(){
+document.getElementById("passwordBox").style.display="block";
+};
 
-setInterval(() => {
-    index = (index + 1) % imagenes.length;
-    document.getElementById("slide").src = imagenes[index];
-}, 3000);
-
-// --- EMOJIS AL PASAR EL MOUSE ---
-const emojis = ["💛","😍","🥰","💖","✨"];
-let emojiIndex = 0;
-
-document.getElementById("slideshow").addEventListener("mousemove", function(e){
-    const emoji = document.createElement("div");
-    emoji.classList.add("emoji");
-    emoji.innerText = emojis[emojiIndex];
-
-    emoji.style.left = e.offsetX + "px";
-    emoji.style.top = e.offsetY + "px";
-
-    this.appendChild(emoji);
-
-    setTimeout(() => emoji.remove(), 1000);
-
-    emojiIndex = (emojiIndex + 1) % emojis.length;
-});
-
-// --- FRASES CAMBIANTES ---
-const frases = [
-"Gracias por existir 💛",
-"Eres mi lugar favorito 🏡",
-"Quiero abrazarte siempre 🤗",
-"Contigo todo es más bonito ✨",
-"Eres mi casualidad favorita 💫"
-];
-
-let fraseIndex = 0;
-
-function cambiarFrase() {
-    document.getElementById("mensaje").innerText = frases[fraseIndex];
-    fraseIndex = (fraseIndex + 1) % frases.length;
+function checkPassword(){
+if(document.getElementById("pass").value==="221124"){
+document.getElementById("introScreen").classList.add("fadeOut");
+document.getElementById("coverLetter").style.display="flex";
+}else{
+document.getElementById("errorMsg").innerText="Contraseña incorrecta 💔";
+}
 }
 
-// --- MUSICA ---
-function reproducirMusica(){
-    const musica = document.getElementById("musica");
-    musica.play();
+/* CARTA */
+function startSite(){
+document.getElementById("coverLetter").style.display="none";
+document.getElementById("mainContent").style.display="block";
+document.getElementById("music").play();
+generateFloating();
+}
+
+/* SLIDESHOW */
+const images=["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg","7.jpeg","8.jpeg","9.jpeg","10.jpeg","11.jpeg","12.jpeg","13.jpeg","14.jpeg","15.jpeg"];
+let i=0;
+setInterval(()=>{
+i=(i+1)%images.length;
+document.getElementById("slide").src=images[i];
+},3000);
+
+/* FRASES */
+const phrases=[
+"Eres mi lugar favorito 💛",
+"Contigo todo es más bonito ✨",
+"Quiero abrazarte siempre 🤗",
+"Gracias por existir 💫"
+];
+let p=0;
+function changePhrase(){
+document.getElementById("phrase").innerText=phrases[p];
+p=(p+1)%phrases.length;
+}
+
+/* CORAZONES */
+setInterval(()=>{
+let heart=document.createElement("span");
+heart.innerText="💛";
+heart.style.left=Math.random()*250+"px";
+heart.style.top=Math.random()*120+"px";
+heart.onclick=()=>heart.remove();
+document.getElementById("heartGame").appendChild(heart);
+setTimeout(()=>heart.remove(),2000);
+},1000);
+
+/* SALTO */
+let jumps=0;
+function jump(){
+jumps++;
+document.getElementById("jumpCount").innerText="Saltos: "+jumps;
+}
+
+/* MEMORIA */
+function memoryGame(){
+document.getElementById("memoryResult").innerText="Nuestra mejor memoria es cada momento juntos 💛";
+}
+
+/* FOTOS FLOTANDO */
+function generateFloating(){
+for(let n=1;n<=15;n++){
+let img=document.createElement("img");
+img.src=n+".jpeg";
+img.className="floating";
+img.style.left=Math.random()*100+"%";
+img.style.animationDuration=(10+Math.random()*10)+"s";
+document.body.appendChild(img);
+}
 }
 
 </script>
-
 </body>
 </html>
