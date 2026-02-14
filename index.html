@@ -3,13 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Feliz San Valentín 💛</title>
 
-<!-- ICONO CORAZÓN -->
 <link rel="icon" type="image/png" href="corazon.png">
 
-<!-- FUENTE ROMÁNTICA -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -34,23 +31,7 @@ body {
     z-index: 999;
 }
 
-#errorScreen input {
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 20px;
-    border: none;
-    text-align: center;
-}
-
-#errorScreen button {
-    margin-top: 10px;
-    padding: 8px 15px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-}
-
-/* CONTENIDO */
+/* MAIN */
 .main {
     display: none;
     width: 100%;
@@ -73,26 +54,68 @@ body {
     z-index: 5;
 }
 
-/* TÍTULO NUEVA FUENTE */
 h1 {
     font-family: 'Great Vibes', cursive;
     color: #ff4f87;
     font-size: 36px;
-    margin-bottom: 15px;
 }
 
-/* VIDEO */
 video {
     width: 240px;
     border-radius: 15px;
 }
 
-/* FRASES */
 #mensaje {
     margin-top: 15px;
-    font-weight: 400;
     min-height: 70px;
     font-size: 14px;
+}
+
+/* BOTONES */
+button {
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    background: #ff6b9d;
+    color: white;
+}
+
+/* DIARIO MODAL */
+#diarioModal {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+#diarioContent {
+    background: white;
+    width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+textarea {
+    width: 100%;
+    height: 80px;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.nota {
+    background: #fff8dc;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: 13px;
 }
 
 /* FOTOS */
@@ -104,7 +127,6 @@ video {
     border-radius: 15px;
     opacity: 0;
     animation: flotar 9s ease forwards;
-    pointer-events: auto;
 }
 
 @keyframes flotar {
@@ -148,6 +170,20 @@ video {
         </video>
 
         <p id="mensaje"></p>
+
+        <button onclick="abrirDiario()">Escribir pensamiento 📝</button>
+        <button onclick="verNotas()">Ver notas 📒</button>
+    </div>
+</div>
+
+<!-- DIARIO -->
+<div id="diarioModal">
+    <div id="diarioContent">
+        <h3>Nuestro Diario 💛</h3>
+        <textarea id="textoNota" placeholder="Escribe lo que sientes..."></textarea>
+        <button onclick="guardarNota()">Guardar</button>
+        <div id="listaNotas"></div>
+        <button onclick="cerrarDiario()">Cerrar</button>
     </div>
 </div>
 
@@ -164,63 +200,21 @@ function checkPassword(){
         document.getElementById("mainContent").style.display = "block";
         document.getElementById("musica").play();
         mostrarFrase();
-    } else {
-        alert("Contraseña incorrecta 💔");
     }
 }
 
-/* 50 FRASES ELABORADAS */
+/* FRASES */
 const frases = [
-"Eres mi lugar seguro incluso en los días más difíciles 💛",
-"Tu risa tiene el poder de arreglar cualquier momento gris ✨",
-"Contigo aprendí que el amor se siente como hogar 🏡",
-"Eres esa casualidad que agradezco todos los días 💫",
-"Tu mirada tiene algo que calma mi mundo 🌎",
-"Me haces feliz de maneras que ni sabía que necesitaba 🥰",
+"Eres mi lugar seguro incluso en los días difíciles 💛",
+"Tu risa arregla cualquier momento gris ✨",
+"Contigo aprendí que el amor es hogar 🏡",
+"Tu mirada calma mi mundo 🌎",
+"Me haces feliz de formas que no imaginaba 🥰",
 "Tu abrazo es mi sitio favorito 🤗",
-"Cuando estoy contigo, todo tiene más sentido 💕",
-"Tu sonrisa ilumina más que cualquier sol ☀️",
-"Eres la mejor parte de mis días 💛",
-"Me inspiras a ser mejor persona cada día ✨",
-"Tu ternura cambia completamente mi mundo 💖",
-"Eres mi pensamiento favorito antes de dormir 🌙",
-"Contigo hasta el silencio es bonito 💫",
-"Eres mi mejor coincidencia 🫶",
-"Tu cariño me hace sentir invencible 💛",
-"Estar contigo siempre vale la pena 💕",
-"Eres mi calma en medio del caos 🌊",
-"Tu voz es mi sonido favorito 🎶",
-"Me haces creer en cosas bonitas 💖",
-"Tu presencia transforma cualquier lugar 🏡",
-"Eres mi sonrisa involuntaria 😌",
-"Contigo todo fluye naturalmente 💫",
-"Tu amor es el mejor regalo 🎁",
-"Eres mi motivación diaria ✨",
-"Me haces sentir especial sin esfuerzo 💛",
-"Tu compañía es mi paz 🕊️",
-"Eres mi historia favorita 📖",
-"Tu forma de ser me enamora cada día 💕",
-"Contigo aprendí a amar sin miedo 💫",
-"Eres el detalle más bonito de mi vida 💖",
-"Tu energía ilumina todo a tu alrededor ✨",
-"Eres mi aventura favorita 🌍",
-"Tu sonrisa es mi debilidad 😍",
-"Me haces sentir en casa 🏡",
-"Eres mi mejor decisión 💛",
-"Tu ternura es infinita 💕",
-"Contigo la vida es más dulce 🍯",
-"Eres mi persona favorita 🫶",
-"Tu forma de querer es única 💫",
-"Me haces sentir completo 💖",
-"Eres mi alegría constante 😊",
-"Tu amor me da fuerza 💪",
-"Contigo todo es más bonito ✨",
-"Eres mi pensamiento feliz 💛",
-"Tu abrazo lo cura todo 🤗",
-"Eres el mejor capítulo de mi vida 📖",
-"Me haces sentir afortunado 💕",
-"Eres mi felicidad diaria 💫",
-"Y te volvería a elegir siempre 💖"
+"Tu sonrisa ilumina todo ☀️",
+"Eres mi mejor decisión 💖",
+"Tu cariño me da fuerza 💪",
+"Y te elegiría siempre 💫"
 ];
 
 function mostrarFrase(){
@@ -229,8 +223,8 @@ function mostrarFrase(){
     setTimeout(mostrarFrase, 5000);
 }
 
-/* FOTOS */
-const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg","7.jpeg","8.jpeg"];
+/* FOTOS AJUSTADAS */
+const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg"];
 let fotosActivas = [];
 
 function crearFoto(){
@@ -255,15 +249,15 @@ function crearFoto(){
         img.style.right = (Math.random()*20) + "vw";
     }
 
-    img.style.top = (Math.random()*60 + 25) + "vh";
+    /* evitar que salgan cortadas abajo */
+    img.style.top = (Math.random()*50 + 10) + "vh";
 
     document.body.appendChild(img);
 
     img.addEventListener("mousemove", function(e){
-        const emojis = ["💛","😍","🥰","💖","✨"];
         const emoji = document.createElement("div");
         emoji.classList.add("emoji");
-        emoji.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+        emoji.innerText = "💛";
         emoji.style.left = e.pageX + "px";
         emoji.style.top = e.pageY + "px";
         document.body.appendChild(emoji);
@@ -277,6 +271,45 @@ function crearFoto(){
 }
 
 setInterval(crearFoto, 2500);
+
+/* DIARIO */
+function abrirDiario(){
+    document.getElementById("diarioModal").style.display="flex";
+}
+
+function cerrarDiario(){
+    document.getElementById("diarioModal").style.display="none";
+}
+
+function guardarNota(){
+    const texto = document.getElementById("textoNota").value;
+    if(!texto) return;
+
+    const fecha = new Date().toLocaleString();
+    const notas = JSON.parse(localStorage.getItem("notas")) || [];
+    notas.push({texto, fecha});
+    localStorage.setItem("notas", JSON.stringify(notas));
+    document.getElementById("textoNota").value="";
+    mostrarNotas();
+}
+
+function verNotas(){
+    abrirDiario();
+    mostrarNotas();
+}
+
+function mostrarNotas(){
+    const lista = document.getElementById("listaNotas");
+    lista.innerHTML="";
+    const notas = JSON.parse(localStorage.getItem("notas")) || [];
+
+    notas.reverse().forEach(nota=>{
+        const div=document.createElement("div");
+        div.classList.add("nota");
+        div.innerHTML=`<strong>${nota.fecha}</strong><br>${nota.texto}`;
+        lista.appendChild(div);
+    });
+}
 
 </script>
 
