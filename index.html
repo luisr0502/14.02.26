@@ -8,52 +8,52 @@
 <style>
 body {
     margin: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #ffd6e8, #fff3b0);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     text-align: center;
 }
 
 .container {
     background: white;
-    padding: 30px;
+    padding: 25px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    max-width: 400px;
+    max-width: 420px;
     width: 90%;
 }
 
 h1 {
-    margin-bottom: 10px;
     color: #ff6b9d;
 }
 
-p {
-    color: #555;
-}
-
-.image {
+.slideshow {
+    position: relative;
     margin: 20px 0;
 }
 
-.image img {
+.slideshow img {
     width: 100%;
     border-radius: 15px;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.emoji {
+    position: absolute;
+    font-size: 24px;
+    animation: float 1s ease-out forwards;
+}
+
+@keyframes float {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-40px); }
 }
 
 .video-space {
-    margin-top: 20px;
-    background: #f4f4f4;
-    height: 200px;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #888;
-    font-size: 14px;
+    margin-top: 15px;
 }
 
 button {
@@ -71,6 +71,12 @@ button {
 button:hover {
     background: #ff4f87;
 }
+
+#mensaje {
+    margin-top: 15px;
+    color: #444;
+    font-weight: bold;
+}
 </style>
 </head>
 
@@ -78,29 +84,81 @@ button:hover {
 
 <div class="container">
     <h1>Para Ti 💛</h1>
-    <p>Así como ellos… yo quiero abrazarte siempre.</p>
 
-    <div class="image">
-        <!-- Aquí puedes poner la imagen si quieres -->
-        <img src="TU-IMAGEN-AQUI.jpg" alt="Nuestros personajes">
+    <!-- SLIDESHOW -->
+    <div class="slideshow" id="slideshow">
+        <img id="slide" src="foto1.jpg" alt="Recuerdos">
     </div>
 
-    <!-- ESPACIO PARA EL VIDEO -->
+    <!-- VIDEO -->
     <div class="video-space">
-        Aquí irá nuestro video especial 🎥💛
+        <video width="100%" controls>
+            <source src="tuvideo.mp4" type="video/mp4">
+        </video>
     </div>
 
-    <button onclick="mostrarMensaje()">Tócame 💛</button>
+    <button onclick="cambiarFrase(); reproducirMusica()">Tócame 💛</button>
 
-    <p id="mensaje" style="margin-top:15px; display:none;">
-        Gracias por existir. Eres mi lugar favorito en el mundo.
-    </p>
+    <p id="mensaje"></p>
 </div>
 
+<!-- AUDIO -->
+<audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-function mostrarMensaje() {
-    document.getElementById("mensaje").style.display = "block";
+
+// --- SLIDESHOW ---
+const imagenes = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
+let index = 0;
+
+setInterval(() => {
+    index = (index + 1) % imagenes.length;
+    document.getElementById("slide").src = imagenes[index];
+}, 3000);
+
+// --- EMOJIS AL PASAR EL MOUSE ---
+const emojis = ["💛","😍","🥰","💖","✨"];
+let emojiIndex = 0;
+
+document.getElementById("slideshow").addEventListener("mousemove", function(e){
+    const emoji = document.createElement("div");
+    emoji.classList.add("emoji");
+    emoji.innerText = emojis[emojiIndex];
+
+    emoji.style.left = e.offsetX + "px";
+    emoji.style.top = e.offsetY + "px";
+
+    this.appendChild(emoji);
+
+    setTimeout(() => emoji.remove(), 1000);
+
+    emojiIndex = (emojiIndex + 1) % emojis.length;
+});
+
+// --- FRASES CAMBIANTES ---
+const frases = [
+"Gracias por existir 💛",
+"Eres mi lugar favorito 🏡",
+"Quiero abrazarte siempre 🤗",
+"Contigo todo es más bonito ✨",
+"Eres mi casualidad favorita 💫"
+];
+
+let fraseIndex = 0;
+
+function cambiarFrase() {
+    document.getElementById("mensaje").innerText = frases[fraseIndex];
+    fraseIndex = (fraseIndex + 1) % frases.length;
 }
+
+// --- MUSICA ---
+function reproducirMusica(){
+    const musica = document.getElementById("musica");
+    musica.play();
+}
+
 </script>
 
 </body>
