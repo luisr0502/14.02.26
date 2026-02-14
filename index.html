@@ -9,109 +9,108 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-/* ... (Tus estilos originales se mantienen) ... */
 body { margin: 0; font-family: 'Poppins', sans-serif; overflow: hidden; background: linear-gradient(135deg, #ffd6e8, #fff3b0); }
+
+/* Pantalla de carga/error */
 #errorScreen { position: fixed; width: 100%; height: 100%; background: #111; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 999; }
+
+/* Contenedor Principal */
 .main { display: none; width: 100%; height: 100vh; position: relative; }
-.container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 340px; padding: 25px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center; z-index: 5; }
-h1 { font-family: 'Great Vibes', cursive; color: #ff4f87; font-size: 36px; }
-video { width: 220px; border-radius: 15px; }
-#mensaje { margin-top: 15px; min-height: 60px; font-size: 14px; }
-button { margin-top: 8px; padding: 8px 15px; border-radius: 20px; border: none; cursor: pointer; background: #ff6b9d; color: white; transition: 0.2s; font-weight: 600; }
-button:hover { background: #ff4f87; }
 
-/* ESTILOS DEL POPUP (MODAL) */
-#diarioModal {
-    display: none; /* Se activa con JS */
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    top: 0;
-    left: 0;
+.container { 
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+    width: 340px; padding: 25px; background: white; 
+    border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+    text-align: center; z-index: 5;
+    overflow: hidden; /* Mantiene todo limpio */
 }
 
-#diarioContent {
-    background: white;
-    width: 90%;
-    max-width: 400px;
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 25px;
-    border-radius: 20px;
-    text-align: center;
-    position: relative;
+h1 { font-family: 'Great Vibes', cursive; color: #ff4f87; font-size: 38px; margin-bottom: 10px; margin-top: 0; }
+
+video { 
+    width: 100%; 
+    border-radius: 15px; 
+    display: block;
+    transform: scale(1.02); /* SOLUCIÓN LÍNEA NEGRA */
+    object-fit: cover;
 }
 
-textarea {
-    width: 100%;
-    height: 100px;
-    border-radius: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    margin-bottom: 10px;
+#mensaje { margin-top: 15px; min-height: 60px; font-size: 14px; color: #555; }
+
+/* Botones con estilo */
+button { 
+    margin-top: 10px; padding: 10px 20px; border-radius: 25px; border: none; cursor: pointer; 
+    background: #ff6b9d; color: white; transition: 0.3s; font-weight: 600; font-size: 14px;
+    box-shadow: 0 4px 10px rgba(255, 107, 157, 0.3);
+}
+button:hover { background: #ff4f87; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 79, 135, 0.4); }
+
+/* Animación de latido para el botón principal */
+.btn-latido { animation: latido 2s infinite; }
+@keyframes latido {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
-.nota {
-    background: #fff8dc;
-    padding: 12px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    font-size: 13px;
-    border-left: 4px solid #ff6b9d;
-    text-align: left;
-}
+/* Modal / Popup */
+#diarioModal { display: none; position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; top: 0; left: 0; backdrop-filter: blur(5px); }
+#diarioContent { background: white; width: 90%; max-width: 380px; max-height: 80vh; overflow-y: auto; padding: 25px; border-radius: 20px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
-/* Efectos de fotos y emojis */
-.foto { position: absolute; width: 150px; height: 200px; object-fit: cover; border-radius: 15px; opacity: 0; animation: flotar 9s ease forwards; z-index: 1; }
-@keyframes flotar { 0% { opacity: 0; transform: translateY(0px); } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; transform: translateY(-80px); } }
-.emoji { position: absolute; font-size: 20px; animation: emojiFloat 1s ease-out forwards; pointer-events: none; z-index: 1100; }
-@keyframes emojiFloat { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-40px); } }
+textarea { width: 100%; height: 120px; border-radius: 15px; padding: 15px; border: 2px solid #ffe6f0; box-sizing: border-box; font-family: 'Poppins', sans-serif; margin-bottom: 15px; resize: none; font-size: 14px; }
+textarea:focus { outline: none; border-color: #ff6b9d; }
+
+.nota { background: #fff8dc; padding: 15px; border-radius: 12px; margin-bottom: 10px; font-size: 13px; border-left: 4px solid #ff6b9d; text-align: left; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+/* Efectos Flotantes */
+.foto { position: absolute; width: 140px; height: 180px; object-fit: cover; border-radius: 10px; opacity: 0; animation: flotar 12s ease forwards; z-index: 1; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 3px solid white; transform: rotate(0deg); }
+@keyframes flotar { 0% { opacity: 0; transform: translateY(100px) rotate(-5deg); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; transform: translateY(-100vh) rotate(5deg); } }
+
+.emoji { position: absolute; font-size: 24px; animation: emojiFloat 1.5s ease-out forwards; pointer-events: none; z-index: 1100; user-select: none; }
+@keyframes emojiFloat { 0% { opacity: 1; transform: translateY(0) scale(0.5); } 50% { transform: scale(1.2); } 100% { opacity: 0; transform: translateY(-60px) scale(1); } }
 </style>
 </head>
 
 <body>
 
 <div id="errorScreen">
-    <h1 style="font-family:Poppins;">404 - Página No Encontrada</h1>
-    <p>Introduce la contraseña 💛</p>
-    <input type="password" id="password">
-    <button onclick="checkPassword()">Entrar</button>
+    <h1 style="font-family:Poppins; color: #ff6b9d;">🔒 Zona Privada</h1>
+    <p style="color:#bbb;">La fecha clave (DDMMAA)</p>
+    <input type="password" id="password" style="padding: 10px; border-radius: 20px; border: none; text-align: center; font-size: 16px;">
+    <button onclick="checkPassword()" style="background: white; color: #ff6b9d;">Ingresar</button>
 </div>
 
 <div class="main" id="mainContent">
     <div class="container">
         <h1>Feliz San Valentín 💛</h1>
+        
         <video autoplay loop muted playsinline>
             <source src="video.mp4" type="video/mp4">
         </video>
+        
         <p id="mensaje"></p>
         
-        <button onclick="abrirEscritura()">Escribir pensamiento 📝</button>
-        <button onclick="verNotas()">Ver notas 📒</button>
+        <button class="btn-latido" onclick="abrirEscritura()">Escribir pensamiento 💌</button>
+        <button onclick="verNotas()">Ver nuestros recuerdos 📒</button>
     </div>
 </div>
 
 <div id="diarioModal">
     <div id="diarioContent">
-        <h3 id="modalTitle" style="color:#ff4f87;">Nuestro Diario 💛</h3>
+        <h3 id="modalTitle" style="color:#ff4f87; margin-top: 0;">Nuestro Diario 💛</h3>
         
         <div id="vistaEscribir" style="display:none;">
-            <textarea id="textoNota" placeholder="¿Qué estás pensando hoy?..."></textarea>
-            <button onclick="guardarNota()">Enviar a la nube ☁️</button>
+            <textarea id="textoNota" placeholder="Escribe algo bonito aquí..."></textarea>
+            <button onclick="guardarNota()">Guardar para siempre ✨</button>
         </div>
 
         <div id="vistaNotas" style="display:none;">
             <div id="listaNotas"></div>
         </div>
 
-        <hr style="margin:20px 0; border:0; border-top:1px solid #eee;">
-        <button onclick="cerrarModal()" style="background:#888;">Cerrar</button>
+        <div style="margin-top: 20px;">
+            <button onclick="cerrarModal()" style="background:#f0f0f0; color:#555; padding: 8px 15px; font-size: 12px;">Cerrar</button>
+        </div>
     </div>
 </div>
 
@@ -135,17 +134,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Exportar funciones a window para que funcionen con onclick
 window.abrirEscritura = function() {
-    document.getElementById("modalTitle").innerText = "Escribir pensamiento 📝";
+    document.getElementById("modalTitle").innerText = "Nuevo Pensamiento 💌";
     document.getElementById("vistaEscribir").style.display = "block";
     document.getElementById("vistaNotas").style.display = "none";
     document.getElementById("diarioModal").style.display = "flex";
+    document.getElementById("textoNota").focus();
 }
 
 window.guardarNota = async function() {
     const texto = document.getElementById("textoNota").value;
     if(!texto.trim()) return;
+
+    // Efecto visual inmediato de botón
+    const btn = document.querySelector("#vistaEscribir button");
+    const originalText = btn.innerText;
+    btn.innerText = "Guardando... ⏳";
+    btn.disabled = true;
 
     try {
         await addDoc(collection(db, "notas"), {
@@ -153,21 +158,24 @@ window.guardarNota = async function() {
             fecha: new Date()
         });
         document.getElementById("textoNota").value = "";
-        alert("¡Pensamiento guardado! 💖");
+        alert("¡Guardado en nuestra historia! 💖");
         cerrarModal();
     } catch (e) {
-        alert("Error al guardar. Revisa las reglas de tu base de datos.");
+        alert("Error al guardar. Intenta de nuevo.");
+    } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
     }
 }
 
 window.verNotas = async function() {
-    document.getElementById("modalTitle").innerText = "Nuestros recuerdos 📒";
+    document.getElementById("modalTitle").innerText = "Recuerdos Guardados 📒";
     document.getElementById("vistaEscribir").style.display = "none";
     document.getElementById("vistaNotas").style.display = "block";
     document.getElementById("diarioModal").style.display = "flex";
     
     const lista = document.getElementById("listaNotas");
-    lista.innerHTML = "<p>Cargando...</p>";
+    lista.innerHTML = "<p style='color:#888'>Buscando recuerdos...</p>";
 
     try {
         const q = query(collection(db, "notas"), orderBy("fecha", "desc"));
@@ -175,20 +183,22 @@ window.verNotas = async function() {
         lista.innerHTML = "";
 
         if(querySnapshot.empty) {
-            lista.innerHTML = "<p>Aún no hay mensajes guardados.</p>";
+            lista.innerHTML = "<p>Aún no hay notitas escritas 🥺</p>";
             return;
         }
 
         querySnapshot.forEach((doc) => {
             const data = doc.data();
             const fecha = data.fecha?.toDate ? data.fecha.toDate() : new Date();
+            const fechaStr = fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute:'2-digit' });
+            
             const div = document.createElement("div");
             div.classList.add("nota");
-            div.innerHTML = `<strong>${fecha.toLocaleString()}</strong><br>${data.texto}`;
+            div.innerHTML = `<small style='color:#ff6b9d; font-weight:bold;'>${fechaStr}</small><br>${data.texto}`;
             lista.appendChild(div);
         });
     } catch (e) {
-        lista.innerHTML = "Error al leer de Firebase.";
+        lista.innerHTML = "Error de conexión ☹️";
     }
 }
 
@@ -198,54 +208,121 @@ window.cerrarModal = function() {
 </script>
 
 <script>
-/* --- LÓGICA DE INTERFAZ (Password, Fotos, Emojis) --- */
+// --- LOGICA VISUAL ---
+
 function checkPassword(){
-    if(document.getElementById("password").value === "221124"){
+    const pass = document.getElementById("password").value;
+    if(pass === "221124"){
         document.getElementById("errorScreen").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
-        document.getElementById("musica").play();
+        
+        // Intentar reproducir música suavemente
+        const audio = document.getElementById("musica");
+        audio.volume = 0.5;
+        audio.play().catch(e => console.log("Click necesario para audio"));
+        
         mostrarFrase();
+        iniciarLluviaFotos();
     } else {
-        alert("Contraseña incorrecta 💛");
+        alert("Ups, contraseña incorrecta 💔");
+        document.getElementById("password").value = "";
     }
 }
 
-const frases = ["Eres mi lugar seguro 💛", "Tu risa arregla todo ✨", "Contigo aprendí el amor 🏡", "Te elegiría siempre 💖"];
+const frases = [
+    "Eres mi lugar seguro en el mundo 🌎💛",
+    "Tu risa es mi sonido favorito ✨",
+    "Contigo cada día es San Valentín 🌹",
+    "Gracias por existir en mi vida 💖",
+    "Me encantas más de lo que imaginas 🥰"
+];
+
 function mostrarFrase(){
     const random = Math.floor(Math.random()*frases.length);
-    const m = document.getElementById("mensaje");
-    if(m) m.innerText = frases[random];
-    setTimeout(mostrarFrase, 5000);
+    const el = document.getElementById("mensaje");
+    // Efecto de desvanecimiento simple
+    el.style.opacity = 0;
+    setTimeout(() => {
+        el.innerText = frases[random];
+        el.style.opacity = 1;
+    }, 500);
+    setTimeout(mostrarFrase, 6000);
+}
+document.getElementById("mensaje").style.transition = "opacity 0.5s";
+
+const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg"]; // TUS FOTOS
+let fotosActivas = [];
+
+function iniciarLluviaFotos() {
+    setInterval(crearFoto, 2000); // Lluvia constante
 }
 
-const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg"];
-let fotosActivas = [];
 function crearFoto(){
-    if(fotosActivas.length >= 4) return;
+    if(fotosActivas.length >= 5) return;
+    
     let src = imagenes[Math.floor(Math.random()*imagenes.length)];
-    if(fotosActivas.includes(src)) return;
-    fotosActivas.push(src);
+    // Permitir repetir fotos si hay pocas, para que no se vacíe
+    
     const img = document.createElement("img");
-    img.src = src; img.classList.add("foto");
-    img.style.left = Math.random() < 0.5 ? (Math.random()*20)+"vw" : "auto";
-    img.style.right = img.style.left === "auto" ? (Math.random()*20)+"vw" : "auto";
-    img.style.top = (Math.random()*50 + 10) + "vh";
+    img.src = src; 
+    img.classList.add("foto");
+    
+    // Posición aleatoria pero evitando el centro exacto
+    const side = Math.random() < 0.5 ? 'left' : 'right';
+    const distance = Math.random() * 25; // 0 a 25vw
+    
+    if(side === 'left') img.style.left = distance + "vw";
+    else img.style.right = distance + "vw";
+    
+    img.style.top = (Math.random()*40 + 20) + "vh"; // Altura variada
+
     document.body.appendChild(img);
+    
+    // Evento para emojis
     img.addEventListener("mousemove", crearEmoji);
-    setTimeout(()=>{ img.remove(); fotosActivas = fotosActivas.filter(f=>f!==src); }, 9000);
+    img.addEventListener("click", crearEmoji); // También al click en celular
+
+    setTimeout(()=>{ 
+        img.remove(); 
+        fotosActivas = fotosActivas.filter(i => i !== img); 
+    }, 12000); // Duran un poco más
+    
+    fotosActivas.push(img);
 }
-setInterval(crearFoto, 2500);
+
+// LISTA DE EMOJIS MEJORADA
+const emojis = ["💛", "💖", "💝", "💘", "💗", "💓", "💞", "💕", "💟", "❣️", "❤️", "💌", "💍", "🌹", "🍫", "✨", "🥰", "😍"];
 
 function crearEmoji(e){
-    const emojis = ["💛","✨","💭"];
     const span = document.createElement("div");
     span.className = "emoji";
     span.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-    span.style.left = e.pageX + "px";
-    span.style.top = e.pageY + "px";
+    
+    // Ajuste para mouse o touch
+    const x = e.pageX || (e.touches ? e.touches[0].pageX : 0);
+    const y = e.pageY || (e.touches ? e.touches[0].pageY : 0);
+    
+    span.style.left = x + "px";
+    span.style.top = y + "px";
+    
+    // Variación pequeña de tamaño
+    const size = Math.random() * 10 + 20; // 20 a 30px
+    span.style.fontSize = size + "px";
+    
     document.body.appendChild(span);
-    setTimeout(()=>span.remove(), 1000);
+    setTimeout(()=>span.remove(), 1500);
 }
+
+// Emojis también al mover el mouse por toda la pantalla (opcional, sutil)
+let lastEmojiTime = 0;
+document.body.addEventListener("mousemove", (e) => {
+    const now = Date.now();
+    if(now - lastEmojiTime > 100) { // Limitar cantidad
+        crearEmoji(e);
+        lastEmojiTime = now;
+    }
+});
+
 </script>
 
 </body>
