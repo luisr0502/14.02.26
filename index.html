@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Feliz San Valentín 💛</title>
 
 <link rel="icon" type="image/png" href="corazon.png">
@@ -14,35 +14,62 @@ body { margin: 0; font-family: 'Poppins', sans-serif; overflow: hidden; backgrou
 /* Pantalla de carga/error */
 #errorScreen { position: fixed; width: 100%; height: 100%; background: #111; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 999; }
 
-/* Contenedor Principal */
+/* MAIN */
 .main { display: none; width: 100%; height: 100vh; position: relative; }
 
-.container { 
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-    width: 400px; /* Más ancho para evitar que se vea estirado */
-    max-width: 90%;
-    padding: 25px; background: white; 
-    border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-    text-align: center; z-index: 5;
-    overflow: hidden; 
+/* CUADRO CENTRAL - VUELVE A DIMENSIONES ORIGINALES */
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 360px; /* Ancho original */
+    padding: 25px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    text-align: center;
+    z-index: 5;
+    overflow: hidden; /* Mantenemos esto para el fix del video */
 }
 
-h1 { font-family: 'Great Vibes', cursive; color: #ff4f87; font-size: 38px; margin-bottom: 10px; margin-top: 0; }
+h1 {
+    font-family: 'Great Vibes', cursive;
+    color: #ff4f87;
+    font-size: 36px; /* Tamaño original */
+    margin-bottom: 15px;
+    margin-top: 0;
+}
 
-video { 
-    width: 100%; 
-    border-radius: 15px; 
+video {
+    width: 240px; /* Ancho original fijo */
+    border-radius: 15px;
     display: block;
-    transform: scale(1.02); /* Mantiene el arreglo de la línea negra */
+    margin: 0 auto; /* Centrado */
+    transform: scale(1.02); /* Mantenemos el fix de la línea negra */
     object-fit: cover;
 }
 
-#mensaje { margin-top: 15px; min-height: 50px; font-size: 15px; color: #555; font-weight: 500;}
+#mensaje {
+    margin-top: 15px;
+    min-height: 60px;
+    font-size: 14px; /* Tamaño original */
+    color: #555;
+    font-weight: 500;
+}
 
-/* Botones */
-button { 
-    margin-top: 10px; padding: 10px 20px; border-radius: 25px; border: none; cursor: pointer; 
-    background: #ff6b9d; color: white; transition: 0.3s; font-weight: 600; font-size: 14px;
+/* BOTONES - Tamaño más compacto como al inicio */
+button {
+    margin-top: 8px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    background: #ff6b9d;
+    color: white;
+    transition: 0.3s;
+    font-weight: 600;
+    font-size: 14px;
     box-shadow: 0 4px 10px rgba(255, 107, 157, 0.3);
 }
 button:hover { background: #ff4f87; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 79, 135, 0.4); }
@@ -56,7 +83,7 @@ button:hover { background: #ff4f87; transform: translateY(-2px); box-shadow: 0 6
 
 /* Modal / Popup */
 #diarioModal { display: none; position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; top: 0; left: 0; backdrop-filter: blur(5px); }
-#diarioContent { background: white; width: 90%; max-width: 380px; max-height: 80vh; overflow-y: auto; padding: 25px; border-radius: 20px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+#diarioContent { background: white; width: 90%; max-width: 360px; max-height: 80vh; overflow-y: auto; padding: 25px; border-radius: 20px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
 textarea { width: 100%; height: 120px; border-radius: 15px; padding: 15px; border: 2px solid #ffe6f0; box-sizing: border-box; font-family: 'Poppins', sans-serif; margin-bottom: 15px; resize: none; font-size: 14px; }
 textarea:focus { outline: none; border-color: #ff6b9d; }
@@ -76,7 +103,8 @@ textarea:focus { outline: none; border-color: #ff6b9d; }
 
 <div id="errorScreen">
     <h1 style="font-family:Poppins; color: #ff6b9d;">🔒 Zona Privada</h1>
-    <p style="color:#bbb;">Contraseña</p> <input type="password" id="password" style="padding: 10px; border-radius: 20px; border: none; text-align: center; font-size: 16px;">
+    <p style="color:#bbb;">Contraseña</p>
+    <input type="password" id="password" style="padding: 10px; border-radius: 20px; border: none; text-align: center; font-size: 16px;">
     <button onclick="checkPassword()" style="background: white; color: #ff6b9d;">Ingresar</button>
 </div>
 
@@ -288,7 +316,7 @@ function mostrarFrase(){
         el.innerText = frases[random];
         el.style.opacity = 1;
     }, 500);
-    setTimeout(mostrarFrase, 5000); // Cambia cada 5 segundos
+    setTimeout(mostrarFrase, 5000);
 }
 document.getElementById("mensaje").style.transition = "opacity 0.5s";
 
