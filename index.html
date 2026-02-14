@@ -178,8 +178,9 @@ textarea {
 
         <p id="mensaje"></p>
 
-        <button id="btnEscribir" onclick="abrirDiario()">Escribir pensamiento 📝</button>
-        <button id="btnVer" onclick="verNotas()">Ver notas 📒</button>
+        <button id="btnEscribir">Escribir pensamiento 📝</button>
+        <button id="btnVer">Ver notas 📒</button>
+
     </div>
 </div>
 
@@ -187,9 +188,11 @@ textarea {
     <div id="diarioContent">
         <h3>Nuestro Diario 💛</h3>
         <textarea id="textoNota" placeholder="Escribe lo que sientes..."></textarea>
-        <button onclick="guardarNota()">Guardar</button>
+        <button id="btnGuardar">Guardar</button>
+
+
         <div id="listaNotas"></div>
-        <button onclick="cerrarDiario()">Cerrar</button>
+        <button id="btnCerrar">Cerrar</button>
     </div>
 </div>
 
@@ -343,9 +346,27 @@ document.querySelectorAll("button").forEach(btn=>{
     btn.addEventListener("mousemove", crearEmoji);
 });
 
+// ESPERAR A QUE CARGUE EL DOM
+document.addEventListener("DOMContentLoaded", () => {
+
+    document.getElementById("btnEscribir")
+        .addEventListener("click", abrirDiario);
+
+    document.getElementById("btnVer")
+        .addEventListener("click", verNotas);
+
+    document.getElementById("btnGuardar")
+        .addEventListener("click", guardarNota);
+
+    document.getElementById("btnCerrar")
+        .addEventListener("click", cerrarDiario);
+
+});
+
 </script>
 
 
 </body>
 </html>
+
 
