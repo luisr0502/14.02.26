@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,7 +44,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 360px;
+    width: 340px;
     padding: 25px;
     background: white;
     border-radius: 20px;
@@ -58,29 +57,31 @@ h1 {
     font-family: 'Great Vibes', cursive;
     color: #ff4f87;
     font-size: 36px;
+    margin-bottom: 10px;
 }
 
 video {
-    width: 240px;
+    width: 220px;
     border-radius: 15px;
 }
 
 #mensaje {
     margin-top: 15px;
-    min-height: 70px;
+    min-height: 60px;
     font-size: 14px;
 }
 
 /* BOTONES */
 button {
     margin-top: 8px;
-    padding: 6px 12px;
+    padding: 8px 15px;
     border-radius: 20px;
     border: none;
     cursor: pointer;
     background: #ff6b9d;
     color: white;
     transition: 0.2s;
+    font-weight: 600;
 }
 
 button:hover {
@@ -93,7 +94,7 @@ button:hover {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.7);
     justify-content: center;
     align-items: center;
     z-index: 50;
@@ -101,26 +102,37 @@ button:hover {
 
 #diarioContent {
     background: white;
-    width: 400px;
+    width: 90%;
+    max-width: 400px;
     max-height: 80vh;
     overflow-y: auto;
-    padding: 20px;
-    border-radius: 15px;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
 }
 
 textarea {
     width: 100%;
-    height: 80px;
-    border-radius: 10px;
-    padding: 8px;
+    height: 100px;
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+#listaNotas {
+    margin-top: 20px;
+    text-align: left;
 }
 
 .nota {
     background: #fff8dc;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
     font-size: 13px;
+    border-left: 4px solid #ff6b9d;
 }
 
 /* FOTOS */
@@ -155,7 +167,6 @@ textarea {
     0% { opacity: 1; transform: translateY(0); }
     100% { opacity: 0; transform: translateY(-40px); }
 }
-
 </style>
 </head>
 
@@ -171,13 +182,10 @@ textarea {
 <div class="main" id="mainContent">
     <div class="container">
         <h1>Feliz San Valentín 💛</h1>
-
         <video autoplay loop muted playsinline>
             <source src="video.mp4" type="video/mp4">
         </video>
-
         <p id="mensaje"></p>
-
         <button id="btnEscribir" onclick="abrirDiario()">Escribir pensamiento 📝</button>
         <button id="btnVer" onclick="verNotas()">Ver notas 📒</button>
     </div>
@@ -185,11 +193,14 @@ textarea {
 
 <div id="diarioModal">
     <div id="diarioContent">
-        <h3>Nuestro Diario 💛</h3>
-        <textarea id="textoNota" placeholder="Escribe lo que sientes..."></textarea>
-        <button onclick="guardarNota()">Guardar</button>
+        <h3 style="color:#ff4f87;">Nuestro Diario 💛</h3>
+        <div id="areaEscritura">
+            <textarea id="textoNota" placeholder="Escribe lo que sientes..."></textarea><br>
+            <button onclick="guardarNota()">Guardar en la nube ☁️</button>
+        </div>
         <div id="listaNotas"></div>
-        <button onclick="cerrarDiario()">Cerrar</button>
+        <hr style="margin:20px 0; border:0; border-top:1px solid #eee;">
+        <button onclick="cerrarDiario()" style="background:#888;">Cerrar</button>
     </div>
 </div>
 
@@ -197,9 +208,87 @@ textarea {
     <source src="musica.mp3" type="audio/mpeg">
 </audio>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* CONTRASEÑA */
+const firebaseConfig = {
+  apiKey: "AIzaSyA4pvaw4bZ42SEgoW3g9G2FPsHgIwu3JjQ",
+  authDomain: "project-2754532206254803154.firebaseapp.com",
+  projectId: "project-2754532206254803154",
+  storageBucket: "project-2754532206254803154.firebasestorage.app",
+  messagingSenderId: "380050788977",
+  appId: "1:380050788977:web:c097824d473311576b41d0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Hacer las funciones globales para que los botones con onclick="" las encuentren
+window.guardarNota = async function() {
+    const texto = document.getElementById("textoNota").value;
+    if(!texto.trim()) return;
+
+    try {
+        await addDoc(collection(db, "notas"), {
+            texto: texto,
+            fecha: new Date()
+        });
+        document.getElementById("textoNota").value = "";
+        alert("Pensamiento guardado para siempre 💖");
+        cerrarDiario();
+    } catch (e) {
+        console.error("Error al guardar: ", e);
+        alert("Hubo un error al conectar con Firebase.");
+    }
+}
+
+window.verNotas = async function() {
+    abrirDiario();
+    document.getElementById("areaEscritura").style.display = "none"; // Ocultar input para ver mejor las notas
+    const lista = document.getElementById("listaNotas");
+    lista.innerHTML = "<p style='text-align:center;'>Cargando recuerdos...</p>";
+
+    try {
+        // Consultamos las notas ordenadas por fecha (más nuevas arriba)
+        const q = query(collection(db, "notas"), orderBy("fecha", "desc"));
+        const querySnapshot = await getDocs(q);
+        lista.innerHTML = "";
+
+        if(querySnapshot.empty) {
+            lista.innerHTML = "<p style='font-size:12px; color:#999;'>Aún no hay notas guardadas.</p>";
+            return;
+        }
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const fechaVal = data.fecha?.seconds ? new Date(data.fecha.seconds * 1000) : new Date();
+            
+            const div = document.createElement("div");
+            div.classList.add("nota");
+            div.innerHTML = `<strong>${fechaVal.toLocaleString()}</strong><br>${data.texto}`;
+            lista.appendChild(div);
+        });
+    } catch (e) {
+        console.error("Error al cargar: ", e);
+        lista.innerHTML = "Error al cargar las notas.";
+    }
+}
+
+window.abrirDiario = function() {
+    document.getElementById("diarioModal").style.display = "flex";
+    document.getElementById("areaEscritura").style.display = "block";
+    document.getElementById("listaNotas").innerHTML = ""; // Limpiar al abrir
+}
+
+window.cerrarDiario = function() {
+    document.getElementById("diarioModal").style.display = "none";
+}
+</script>
+
+<script>
+/* --- EL RESTO DE TU LÓGICA (FOTOS, EMOJIS, PASSWORD) --- */
+
 function checkPassword(){
     if(document.getElementById("password").value === "221124"){
         document.getElementById("errorScreen").style.display = "none";
@@ -209,51 +298,39 @@ function checkPassword(){
     }
 }
 
-/* FRASES */
 const frases = [
-"Eres mi lugar seguro incluso en los días difíciles 💛",
-"Tu risa arregla cualquier momento gris ✨",
-"Contigo aprendí que el amor es hogar 🏡",
-"Tu mirada calma mi mundo 🌎",
-"Y te elegiría siempre 💖"
+    "Eres mi lugar seguro incluso en los días difíciles 💛",
+    "Tu risa arregla cualquier momento gris ✨",
+    "Contigo aprendí que el amor es hogar 🏡",
+    "Tu mirada calma mi mundo 🌎",
+    "Y te elegiría siempre 💖"
 ];
 
 function mostrarFrase(){
     const random = Math.floor(Math.random()*frases.length);
-    document.getElementById("mensaje").innerText = frases[random];
+    const mensajeEl = document.getElementById("mensaje");
+    if(mensajeEl) mensajeEl.innerText = frases[random];
     setTimeout(mostrarFrase, 5000);
 }
 
-/* FOTOS */
 const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg"];
 let fotosActivas = [];
 
 function crearFoto(){
     if(fotosActivas.length >= 4) return;
-
-    let imgSrc;
-    do {
-        imgSrc = imagenes[Math.floor(Math.random()*imagenes.length)];
-    } while(fotosActivas.includes(imgSrc));
+    let imgSrc = imagenes[Math.floor(Math.random()*imagenes.length)];
+    if(fotosActivas.includes(imgSrc)) return;
 
     fotosActivas.push(imgSrc);
-
     const img = document.createElement("img");
     img.src = imgSrc;
     img.classList.add("foto");
-
-    if(Math.random() < 0.5){
-        img.style.left = (Math.random()*20) + "vw";
-    } else {
-        img.style.right = (Math.random()*20) + "vw";
-    }
-
+    if(Math.random() < 0.5) img.style.left = (Math.random()*20) + "vw";
+    else img.style.right = (Math.random()*20) + "vw";
     img.style.top = (Math.random()*50 + 10) + "vh";
 
     document.body.appendChild(img);
-
     img.addEventListener("mousemove", crearEmoji);
-
     setTimeout(()=>{
         img.remove();
         fotosActivas = fotosActivas.filter(f=>f!==imgSrc);
@@ -262,45 +339,6 @@ function crearFoto(){
 
 setInterval(crearFoto, 2500);
 
-/* DIARIO */
-function abrirDiario(){
-    document.getElementById("diarioModal").style.display="flex";
-}
-
-function cerrarDiario(){
-    document.getElementById("diarioModal").style.display="none";
-}
-
-function guardarNota(){
-    const texto = document.getElementById("textoNota").value;
-    if(!texto) return;
-
-    const fecha = new Date().toLocaleString();
-    const notas = JSON.parse(localStorage.getItem("notas")) || [];
-    notas.push({texto, fecha});
-    localStorage.setItem("notas", JSON.stringify(notas));
-    document.getElementById("textoNota").value="";
-    mostrarNotas();
-}
-
-function verNotas(){
-    abrirDiario();
-    mostrarNotas();
-}
-
-function mostrarNotas(){
-    const lista = document.getElementById("listaNotas");
-    lista.innerHTML="";
-    const notas = JSON.parse(localStorage.getItem("notas")) || [];
-    notas.reverse().forEach(nota=>{
-        const div=document.createElement("div");
-        div.classList.add("nota");
-        div.innerHTML=`<strong>${nota.fecha}</strong><br>${nota.texto}`;
-        lista.appendChild(div);
-    });
-}
-
-/* EMOJIS */
 function crearEmoji(e){
     const emojis = ["💛","💭","✨"];
     const emoji = document.createElement("div");
@@ -312,13 +350,10 @@ function crearEmoji(e){
     setTimeout(()=>emoji.remove(),1000);
 }
 
-/* EMOJIS EN BOTONES */
 document.querySelectorAll("button").forEach(btn=>{
     btn.addEventListener("mousemove", crearEmoji);
 });
-
 </script>
 
 </body>
 </html>
-
