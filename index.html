@@ -197,10 +197,26 @@ textarea {
     <source src="musica.mp3" type="audio/mpeg">
 </audio>
 
-<script>
+<script type="module">
+
+/* 🔥 FIREBASE */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA4pvaw4bZ42SEgoW3g9G2FPsHgIwu3JjQ",
+  authDomain: "project-2754532206254803154.firebaseapp.com",
+  projectId: "project-2754532206254803154",
+  storageBucket: "project-2754532206254803154.firebasestorage.app",
+  messagingSenderId: "380050788977",
+  appId: "1:380050788977:web:c097824d473311576b41d0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 /* CONTRASEÑA */
-function checkPassword(){
+window.checkPassword = function(){
     if(document.getElementById("password").value === "221124"){
         document.getElementById("errorScreen").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
@@ -222,6 +238,55 @@ function mostrarFrase(){
     const random = Math.floor(Math.random()*frases.length);
     document.getElementById("mensaje").innerText = frases[random];
     setTimeout(mostrarFrase, 5000);
+}
+
+/* DIARIO */
+window.abrirDiario = function(){
+    document.getElementById("diarioModal").style.display="flex";
+}
+
+window.cerrarDiario = function(){
+    document.getElementById("diarioModal").style.display="none";
+}
+
+window.guardarNota = async function(){
+
+    const texto = document.getElementById("textoNota").value;
+
+    if(texto.trim() === "") return;
+
+    await addDoc(collection(db, "notas"), {
+        texto: texto,
+        fecha: new Date()
+    });
+
+    document.getElementById("textoNota").value="";
+    mostrarNotas();
+}
+
+window.verNotas = function(){
+    abrirDiario();
+    mostrarNotas();
+}
+
+async function mostrarNotas(){
+
+    const lista = document.getElementById("listaNotas");
+    lista.innerHTML="";
+
+    const q = query(collection(db, "notas"), orderBy("fecha", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+
+        const data = doc.data();
+        const fecha = new Date(data.fecha.seconds * 1000);
+
+        const div=document.createElement("div");
+        div.classList.add("nota");
+        div.innerHTML=`<strong>${fecha.toLocaleString()}</strong><br>${data.texto}`;
+        lista.appendChild(div);
+    });
 }
 
 /* FOTOS */
@@ -262,44 +327,6 @@ function crearFoto(){
 
 setInterval(crearFoto, 2500);
 
-/* DIARIO */
-function abrirDiario(){
-    document.getElementById("diarioModal").style.display="flex";
-}
-
-function cerrarDiario(){
-    document.getElementById("diarioModal").style.display="none";
-}
-
-function guardarNota(){
-    const texto = document.getElementById("textoNota").value;
-    if(!texto) return;
-
-    const fecha = new Date().toLocaleString();
-    const notas = JSON.parse(localStorage.getItem("notas")) || [];
-    notas.push({texto, fecha});
-    localStorage.setItem("notas", JSON.stringify(notas));
-    document.getElementById("textoNota").value="";
-    mostrarNotas();
-}
-
-function verNotas(){
-    abrirDiario();
-    mostrarNotas();
-}
-
-function mostrarNotas(){
-    const lista = document.getElementById("listaNotas");
-    lista.innerHTML="";
-    const notas = JSON.parse(localStorage.getItem("notas")) || [];
-    notas.reverse().forEach(nota=>{
-        const div=document.createElement("div");
-        div.classList.add("nota");
-        div.innerHTML=`<strong>${nota.fecha}</strong><br>${nota.texto}`;
-        lista.appendChild(div);
-    });
-}
-
 /* EMOJIS */
 function crearEmoji(e){
     const emojis = ["💛","💭","✨"];
@@ -312,12 +339,13 @@ function crearEmoji(e){
     setTimeout(()=>emoji.remove(),1000);
 }
 
-/* EMOJIS EN BOTONES */
 document.querySelectorAll("button").forEach(btn=>{
     btn.addEventListener("mousemove", crearEmoji);
 });
 
 </script>
 
+
 </body>
 </html>
+
