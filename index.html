@@ -19,10 +19,12 @@ body { margin: 0; font-family: 'Poppins', sans-serif; overflow: hidden; backgrou
 
 .container { 
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-    width: 340px; padding: 25px; background: white; 
+    width: 400px; /* Más ancho para evitar que se vea estirado */
+    max-width: 90%;
+    padding: 25px; background: white; 
     border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
     text-align: center; z-index: 5;
-    overflow: hidden; /* Mantiene todo limpio */
+    overflow: hidden; 
 }
 
 h1 { font-family: 'Great Vibes', cursive; color: #ff4f87; font-size: 38px; margin-bottom: 10px; margin-top: 0; }
@@ -31,13 +33,13 @@ video {
     width: 100%; 
     border-radius: 15px; 
     display: block;
-    transform: scale(1.02); /* SOLUCIÓN LÍNEA NEGRA */
+    transform: scale(1.02); /* Mantiene el arreglo de la línea negra */
     object-fit: cover;
 }
 
-#mensaje { margin-top: 15px; min-height: 60px; font-size: 14px; color: #555; }
+#mensaje { margin-top: 15px; min-height: 50px; font-size: 15px; color: #555; font-weight: 500;}
 
-/* Botones con estilo */
+/* Botones */
 button { 
     margin-top: 10px; padding: 10px 20px; border-radius: 25px; border: none; cursor: pointer; 
     background: #ff6b9d; color: white; transition: 0.3s; font-weight: 600; font-size: 14px;
@@ -45,7 +47,6 @@ button {
 }
 button:hover { background: #ff4f87; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 79, 135, 0.4); }
 
-/* Animación de latido para el botón principal */
 .btn-latido { animation: latido 2s infinite; }
 @keyframes latido {
     0% { transform: scale(1); }
@@ -63,7 +64,7 @@ textarea:focus { outline: none; border-color: #ff6b9d; }
 .nota { background: #fff8dc; padding: 15px; border-radius: 12px; margin-bottom: 10px; font-size: 13px; border-left: 4px solid #ff6b9d; text-align: left; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
 /* Efectos Flotantes */
-.foto { position: absolute; width: 140px; height: 180px; object-fit: cover; border-radius: 10px; opacity: 0; animation: flotar 12s ease forwards; z-index: 1; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 3px solid white; transform: rotate(0deg); }
+.foto { position: absolute; width: 140px; height: 180px; object-fit: cover; border-radius: 10px; opacity: 0; animation: flotar 12s ease forwards; z-index: 1; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 3px solid white; transform: rotate(0deg); cursor: pointer; }
 @keyframes flotar { 0% { opacity: 0; transform: translateY(100px) rotate(-5deg); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; transform: translateY(-100vh) rotate(5deg); } }
 
 .emoji { position: absolute; font-size: 24px; animation: emojiFloat 1.5s ease-out forwards; pointer-events: none; z-index: 1100; user-select: none; }
@@ -75,8 +76,7 @@ textarea:focus { outline: none; border-color: #ff6b9d; }
 
 <div id="errorScreen">
     <h1 style="font-family:Poppins; color: #ff6b9d;">🔒 Zona Privada</h1>
-    <p style="color:#bbb;">La fecha clave (DDMMAA)</p>
-    <input type="password" id="password" style="padding: 10px; border-radius: 20px; border: none; text-align: center; font-size: 16px;">
+    <p style="color:#bbb;">Contraseña</p> <input type="password" id="password" style="padding: 10px; border-radius: 20px; border: none; text-align: center; font-size: 16px;">
     <button onclick="checkPassword()" style="background: white; color: #ff6b9d;">Ingresar</button>
 </div>
 
@@ -146,7 +146,6 @@ window.guardarNota = async function() {
     const texto = document.getElementById("textoNota").value;
     if(!texto.trim()) return;
 
-    // Efecto visual inmediato de botón
     const btn = document.querySelector("#vistaEscribir button");
     const originalText = btn.innerText;
     btn.innerText = "Guardando... ⏳";
@@ -215,8 +214,6 @@ function checkPassword(){
     if(pass === "221124"){
         document.getElementById("errorScreen").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
-        
-        // Intentar reproducir música suavemente
         const audio = document.getElementById("musica");
         audio.volume = 0.5;
         audio.play().catch(e => console.log("Click necesario para audio"));
@@ -229,68 +226,110 @@ function checkPassword(){
     }
 }
 
+// 50 FRASES ROMÁNTICAS
 const frases = [
     "Eres mi lugar seguro en el mundo 🌎💛",
     "Tu risa es mi sonido favorito ✨",
     "Contigo cada día es San Valentín 🌹",
     "Gracias por existir en mi vida 💖",
-    "Me encantas más de lo que imaginas 🥰"
+    "Me encantas más de lo que imaginas 🥰",
+    "Eres la casualidad más bonita de mi vida",
+    "Te elegiría a ti, una y mil veces",
+    "Mi corazón late más fuerte por ti",
+    "Haces que mi mundo sea mejor",
+    "No te cambio por nada ni nadie",
+    "Tus abrazos son mi refugio",
+    "Me haces inmensamente feliz",
+    "Eres mi sueño hecho realidad",
+    "Juntos es mi sitio favorito",
+    "Te amo más que ayer y menos que mañana",
+    "Tu felicidad es mi prioridad",
+    "Eres magia en mi vida ✨",
+    "Me complementas perfectamente",
+    "Eres el motivo de mis sonrisas",
+    "A tu lado todo es más bonito",
+    "Te quiero hasta el infinito",
+    "Eres mi persona favorita en el mundo",
+    "Adoro cada momento contigo",
+    "Eres mi sol en días grises",
+    "Tus besos son mi medicina",
+    "Siempre cuidaré de ti",
+    "Eres lo mejor que me ha pasado",
+    "Tu mirada me da paz",
+    "Quiero escribir mi historia contigo",
+    "Eres única e irrepetible",
+    "Me enamoro de ti todos los días",
+    "Eres mi pensamiento al despertar",
+    "Gracias por tanto amor",
+    "Eres mi pedacito de cielo",
+    "Contigo el tiempo vuela",
+    "Me haces sentir especial",
+    "Eres el amor de mi vida",
+    "No hay nadie como tú",
+    "Te adoro con todo mi ser",
+    "Eres mi inspiración diaria",
+    "Tu amor me hace fuerte",
+    "Quiero verte feliz siempre",
+    "Eres mi todo",
+    "Me pierdo en tus ojos",
+    "Eres la dueña de mi corazón",
+    "Qué suerte tenerte",
+    "Te amo con locura",
+    "Eres mi mejor regalo",
+    "Siempre estaré para ti",
+    "Simplemente, te amo 💛"
 ];
 
 function mostrarFrase(){
     const random = Math.floor(Math.random()*frases.length);
     const el = document.getElementById("mensaje");
-    // Efecto de desvanecimiento simple
     el.style.opacity = 0;
     setTimeout(() => {
         el.innerText = frases[random];
         el.style.opacity = 1;
     }, 500);
-    setTimeout(mostrarFrase, 6000);
+    setTimeout(mostrarFrase, 5000); // Cambia cada 5 segundos
 }
 document.getElementById("mensaje").style.transition = "opacity 0.5s";
 
-const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg"]; // TUS FOTOS
+const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg"];
 let fotosActivas = [];
 
 function iniciarLluviaFotos() {
-    setInterval(crearFoto, 2000); // Lluvia constante
+    setInterval(crearFoto, 2000);
 }
 
 function crearFoto(){
     if(fotosActivas.length >= 5) return;
     
     let src = imagenes[Math.floor(Math.random()*imagenes.length)];
-    // Permitir repetir fotos si hay pocas, para que no se vacíe
     
     const img = document.createElement("img");
     img.src = src; 
     img.classList.add("foto");
     
-    // Posición aleatoria pero evitando el centro exacto
     const side = Math.random() < 0.5 ? 'left' : 'right';
-    const distance = Math.random() * 25; // 0 a 25vw
+    const distance = Math.random() * 25; 
     
     if(side === 'left') img.style.left = distance + "vw";
     else img.style.right = distance + "vw";
     
-    img.style.top = (Math.random()*40 + 20) + "vh"; // Altura variada
+    img.style.top = (Math.random()*40 + 20) + "vh";
 
     document.body.appendChild(img);
     
-    // Evento para emojis
+    // EMOJIS SOLO SOBRE LAS FOTOS
     img.addEventListener("mousemove", crearEmoji);
-    img.addEventListener("click", crearEmoji); // También al click en celular
+    img.addEventListener("click", crearEmoji);
 
     setTimeout(()=>{ 
         img.remove(); 
         fotosActivas = fotosActivas.filter(i => i !== img); 
-    }, 12000); // Duran un poco más
+    }, 12000);
     
     fotosActivas.push(img);
 }
 
-// LISTA DE EMOJIS MEJORADA
 const emojis = ["💛", "💖", "💝", "💘", "💗", "💓", "💞", "💕", "💟", "❣️", "❤️", "💌", "💍", "🌹", "🍫", "✨", "🥰", "😍"];
 
 function crearEmoji(e){
@@ -298,30 +337,18 @@ function crearEmoji(e){
     span.className = "emoji";
     span.innerText = emojis[Math.floor(Math.random()*emojis.length)];
     
-    // Ajuste para mouse o touch
     const x = e.pageX || (e.touches ? e.touches[0].pageX : 0);
     const y = e.pageY || (e.touches ? e.touches[0].pageY : 0);
     
     span.style.left = x + "px";
     span.style.top = y + "px";
     
-    // Variación pequeña de tamaño
-    const size = Math.random() * 10 + 20; // 20 a 30px
+    const size = Math.random() * 10 + 20;
     span.style.fontSize = size + "px";
     
     document.body.appendChild(span);
     setTimeout(()=>span.remove(), 1500);
 }
-
-// Emojis también al mover el mouse por toda la pantalla (opcional, sutil)
-let lastEmojiTime = 0;
-document.body.addEventListener("mousemove", (e) => {
-    const now = Date.now();
-    if(now - lastEmojiTime > 100) { // Limitar cantidad
-        crearEmoji(e);
-        lastEmojiTime = now;
-    }
-});
 
 </script>
 
