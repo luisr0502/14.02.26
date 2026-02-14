@@ -70,7 +70,6 @@ video {
     font-size: 14px;
 }
 
-/* BOTONES */
 button {
     margin-top: 8px;
     padding: 6px 12px;
@@ -86,7 +85,6 @@ button:hover {
     background: #ff4f87;
 }
 
-/* DIARIO */
 #diarioModal {
     display: none;
     position: fixed;
@@ -141,7 +139,6 @@ textarea {
     100% { opacity: 0; transform: translateY(-80px); }
 }
 
-/* EMOJIS */
 .emoji {
     position: absolute;
     font-size: 20px;
@@ -184,7 +181,7 @@ textarea {
 <div id="diarioModal">
     <div id="diarioContent">
         <h3>Nuestro Diario 💛</h3>
-        <textarea id="textoNota" placeholder="Escribe lo que sientes..."></textarea>
+        <textarea id="textoNota"></textarea>
         <button onclick="guardarNota()">Guardar</button>
         <div id="listaNotas"></div>
         <button onclick="cerrarDiario()">Cerrar</button>
@@ -192,10 +189,9 @@ textarea {
 </div>
 
 <audio id="musica" loop>
-    <source src="musica.mp3" type="audio/mpeg">
+    <source src="musica.mp3">
 </audio>
 
-<!-- FIREBASE -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -213,7 +209,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* CONTRASEÑA */
+/* ===== FUNCIONES ===== */
+
 window.checkPassword = function(){
     if(document.getElementById("password").value === "221124"){
         document.getElementById("errorScreen").style.display = "none";
@@ -223,7 +220,6 @@ window.checkPassword = function(){
     }
 }
 
-/* FRASES */
 const frases = [
 "Eres mi lugar seguro incluso en los días difíciles 💛",
 "Tu risa arregla cualquier momento gris ✨",
@@ -238,7 +234,46 @@ function mostrarFrase(){
     setTimeout(mostrarFrase, 5000);
 }
 
-/* DIARIO CON FIREBASE */
+/* FOTOS */
+const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg"];
+let fotosActivas = [];
+
+function crearFoto(){
+    if(fotosActivas.length >= 4) return;
+
+    let imgSrc;
+    do {
+        imgSrc = imagenes[Math.floor(Math.random()*imagenes.length)];
+    } while(fotosActivas.includes(imgSrc));
+
+    fotosActivas.push(imgSrc);
+
+    const img = document.createElement("img");
+    img.src = imgSrc;
+    img.classList.add("foto");
+
+    if(Math.random() < 0.5){
+        img.style.left = (Math.random()*20) + "vw";
+    } else {
+        img.style.right = (Math.random()*20) + "vw";
+    }
+
+    img.style.top = (Math.random()*50 + 10) + "vh";
+
+    document.body.appendChild(img);
+
+    img.addEventListener("mousemove", crearEmoji);
+
+    setTimeout(()=>{
+        img.remove();
+        fotosActivas = fotosActivas.filter(f=>f!==imgSrc);
+    },9000);
+}
+
+setInterval(crearFoto, 2500);
+
+/* DIARIO FIREBASE */
+
 window.abrirDiario = function(){
     document.getElementById("diarioModal").style.display="flex";
 }
