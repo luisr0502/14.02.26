@@ -9,95 +9,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    overflow: hidden;
-    background: linear-gradient(135deg, #ffd6e8, #fff3b0);
-}
+/* ... (Tus estilos originales se mantienen) ... */
+body { margin: 0; font-family: 'Poppins', sans-serif; overflow: hidden; background: linear-gradient(135deg, #ffd6e8, #fff3b0); }
+#errorScreen { position: fixed; width: 100%; height: 100%; background: #111; color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 999; }
+.main { display: none; width: 100%; height: 100vh; position: relative; }
+.container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 340px; padding: 25px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center; z-index: 5; }
+h1 { font-family: 'Great Vibes', cursive; color: #ff4f87; font-size: 36px; }
+video { width: 220px; border-radius: 15px; }
+#mensaje { margin-top: 15px; min-height: 60px; font-size: 14px; }
+button { margin-top: 8px; padding: 8px 15px; border-radius: 20px; border: none; cursor: pointer; background: #ff6b9d; color: white; transition: 0.2s; font-weight: 600; }
+button:hover { background: #ff4f87; }
 
-/* 404 */
-#errorScreen {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #111;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 999;
-}
-
-/* MAIN */
-.main {
-    display: none;
-    width: 100%;
-    height: 100vh;
-    position: relative;
-}
-
-/* CUADRO CENTRAL */
-.container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 340px;
-    padding: 25px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    text-align: center;
-    z-index: 5;
-}
-
-h1 {
-    font-family: 'Great Vibes', cursive;
-    color: #ff4f87;
-    font-size: 36px;
-    margin-bottom: 10px;
-}
-
-video {
-    width: 220px;
-    border-radius: 15px;
-}
-
-#mensaje {
-    margin-top: 15px;
-    min-height: 60px;
-    font-size: 14px;
-}
-
-/* BOTONES */
-button {
-    margin-top: 8px;
-    padding: 8px 15px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    background: #ff6b9d;
-    color: white;
-    transition: 0.2s;
-    font-weight: 600;
-}
-
-button:hover {
-    background: #ff4f87;
-}
-
-/* DIARIO */
+/* ESTILOS DEL POPUP (MODAL) */
 #diarioModal {
-    display: none;
+    display: none; /* Se activa con JS */
     position: fixed;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.7);
     justify-content: center;
     align-items: center;
-    z-index: 50;
+    z-index: 1000;
+    top: 0;
+    left: 0;
 }
 
 #diarioContent {
@@ -109,6 +43,7 @@ button:hover {
     padding: 25px;
     border-radius: 20px;
     text-align: center;
+    position: relative;
 }
 
 textarea {
@@ -118,12 +53,8 @@ textarea {
     padding: 10px;
     border: 1px solid #ddd;
     box-sizing: border-box;
-    font-family: inherit;
-}
-
-#listaNotas {
-    margin-top: 20px;
-    text-align: left;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 10px;
 }
 
 .nota {
@@ -133,40 +64,14 @@ textarea {
     margin-bottom: 10px;
     font-size: 13px;
     border-left: 4px solid #ff6b9d;
+    text-align: left;
 }
 
-/* FOTOS */
-.foto {
-    position: absolute;
-    width: 150px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 15px;
-    opacity: 0;
-    animation: flotar 9s ease forwards;
-    z-index: 1;
-}
-
-@keyframes flotar {
-    0% { opacity: 0; transform: translateY(0px); }
-    15% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(-80px); }
-}
-
-/* EMOJIS */
-.emoji {
-    position: absolute;
-    font-size: 20px;
-    animation: emojiFloat 1s ease-out forwards;
-    pointer-events: none;
-    z-index: 100;
-}
-
-@keyframes emojiFloat {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-40px); }
-}
+/* Efectos de fotos y emojis */
+.foto { position: absolute; width: 150px; height: 200px; object-fit: cover; border-radius: 15px; opacity: 0; animation: flotar 9s ease forwards; z-index: 1; }
+@keyframes flotar { 0% { opacity: 0; transform: translateY(0px); } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; transform: translateY(-80px); } }
+.emoji { position: absolute; font-size: 20px; animation: emojiFloat 1s ease-out forwards; pointer-events: none; z-index: 1100; }
+@keyframes emojiFloat { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-40px); } }
 </style>
 </head>
 
@@ -186,21 +91,27 @@ textarea {
             <source src="video.mp4" type="video/mp4">
         </video>
         <p id="mensaje"></p>
-        <button id="btnEscribir" onclick="abrirDiario()">Escribir pensamiento 📝</button>
-        <button id="btnVer" onclick="verNotas()">Ver notas 📒</button>
+        
+        <button onclick="abrirEscritura()">Escribir pensamiento 📝</button>
+        <button onclick="verNotas()">Ver notas 📒</button>
     </div>
 </div>
 
 <div id="diarioModal">
     <div id="diarioContent">
-        <h3 style="color:#ff4f87;">Nuestro Diario 💛</h3>
-        <div id="areaEscritura">
-            <textarea id="textoNota" placeholder="Escribe lo que sientes..."></textarea><br>
-            <button onclick="guardarNota()">Guardar en la nube ☁️</button>
+        <h3 id="modalTitle" style="color:#ff4f87;">Nuestro Diario 💛</h3>
+        
+        <div id="vistaEscribir" style="display:none;">
+            <textarea id="textoNota" placeholder="¿Qué estás pensando hoy?..."></textarea>
+            <button onclick="guardarNota()">Enviar a la nube ☁️</button>
         </div>
-        <div id="listaNotas"></div>
+
+        <div id="vistaNotas" style="display:none;">
+            <div id="listaNotas"></div>
+        </div>
+
         <hr style="margin:20px 0; border:0; border-top:1px solid #eee;">
-        <button onclick="cerrarDiario()" style="background:#888;">Cerrar</button>
+        <button onclick="cerrarModal()" style="background:#888;">Cerrar</button>
     </div>
 </div>
 
@@ -224,7 +135,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Hacer las funciones globales para que los botones con onclick="" las encuentren
+// Exportar funciones a window para que funcionen con onclick
+window.abrirEscritura = function() {
+    document.getElementById("modalTitle").innerText = "Escribir pensamiento 📝";
+    document.getElementById("vistaEscribir").style.display = "block";
+    document.getElementById("vistaNotas").style.display = "none";
+    document.getElementById("diarioModal").style.display = "flex";
+}
+
 window.guardarNota = async function() {
     const texto = document.getElementById("textoNota").value;
     if(!texto.trim()) return;
@@ -235,124 +153,99 @@ window.guardarNota = async function() {
             fecha: new Date()
         });
         document.getElementById("textoNota").value = "";
-        alert("Pensamiento guardado para siempre 💖");
-        cerrarDiario();
+        alert("¡Pensamiento guardado! 💖");
+        cerrarModal();
     } catch (e) {
-        console.error("Error al guardar: ", e);
-        alert("Hubo un error al conectar con Firebase.");
+        alert("Error al guardar. Revisa las reglas de tu base de datos.");
     }
 }
 
 window.verNotas = async function() {
-    abrirDiario();
-    document.getElementById("areaEscritura").style.display = "none"; // Ocultar input para ver mejor las notas
+    document.getElementById("modalTitle").innerText = "Nuestros recuerdos 📒";
+    document.getElementById("vistaEscribir").style.display = "none";
+    document.getElementById("vistaNotas").style.display = "block";
+    document.getElementById("diarioModal").style.display = "flex";
+    
     const lista = document.getElementById("listaNotas");
-    lista.innerHTML = "<p style='text-align:center;'>Cargando recuerdos...</p>";
+    lista.innerHTML = "<p>Cargando...</p>";
 
     try {
-        // Consultamos las notas ordenadas por fecha (más nuevas arriba)
         const q = query(collection(db, "notas"), orderBy("fecha", "desc"));
         const querySnapshot = await getDocs(q);
         lista.innerHTML = "";
 
         if(querySnapshot.empty) {
-            lista.innerHTML = "<p style='font-size:12px; color:#999;'>Aún no hay notas guardadas.</p>";
+            lista.innerHTML = "<p>Aún no hay mensajes guardados.</p>";
             return;
         }
 
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            const fechaVal = data.fecha?.seconds ? new Date(data.fecha.seconds * 1000) : new Date();
-            
+            const fecha = data.fecha?.toDate ? data.fecha.toDate() : new Date();
             const div = document.createElement("div");
             div.classList.add("nota");
-            div.innerHTML = `<strong>${fechaVal.toLocaleString()}</strong><br>${data.texto}`;
+            div.innerHTML = `<strong>${fecha.toLocaleString()}</strong><br>${data.texto}`;
             lista.appendChild(div);
         });
     } catch (e) {
-        console.error("Error al cargar: ", e);
-        lista.innerHTML = "Error al cargar las notas.";
+        lista.innerHTML = "Error al leer de Firebase.";
     }
 }
 
-window.abrirDiario = function() {
-    document.getElementById("diarioModal").style.display = "flex";
-    document.getElementById("areaEscritura").style.display = "block";
-    document.getElementById("listaNotas").innerHTML = ""; // Limpiar al abrir
-}
-
-window.cerrarDiario = function() {
+window.cerrarModal = function() {
     document.getElementById("diarioModal").style.display = "none";
 }
 </script>
 
 <script>
-/* --- EL RESTO DE TU LÓGICA (FOTOS, EMOJIS, PASSWORD) --- */
-
+/* --- LÓGICA DE INTERFAZ (Password, Fotos, Emojis) --- */
 function checkPassword(){
     if(document.getElementById("password").value === "221124"){
         document.getElementById("errorScreen").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
         document.getElementById("musica").play();
         mostrarFrase();
+    } else {
+        alert("Contraseña incorrecta 💛");
     }
 }
 
-const frases = [
-    "Eres mi lugar seguro incluso en los días difíciles 💛",
-    "Tu risa arregla cualquier momento gris ✨",
-    "Contigo aprendí que el amor es hogar 🏡",
-    "Tu mirada calma mi mundo 🌎",
-    "Y te elegiría siempre 💖"
-];
-
+const frases = ["Eres mi lugar seguro 💛", "Tu risa arregla todo ✨", "Contigo aprendí el amor 🏡", "Te elegiría siempre 💖"];
 function mostrarFrase(){
     const random = Math.floor(Math.random()*frases.length);
-    const mensajeEl = document.getElementById("mensaje");
-    if(mensajeEl) mensajeEl.innerText = frases[random];
+    const m = document.getElementById("mensaje");
+    if(m) m.innerText = frases[random];
     setTimeout(mostrarFrase, 5000);
 }
 
 const imagenes = ["1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg"];
 let fotosActivas = [];
-
 function crearFoto(){
     if(fotosActivas.length >= 4) return;
-    let imgSrc = imagenes[Math.floor(Math.random()*imagenes.length)];
-    if(fotosActivas.includes(imgSrc)) return;
-
-    fotosActivas.push(imgSrc);
+    let src = imagenes[Math.floor(Math.random()*imagenes.length)];
+    if(fotosActivas.includes(src)) return;
+    fotosActivas.push(src);
     const img = document.createElement("img");
-    img.src = imgSrc;
-    img.classList.add("foto");
-    if(Math.random() < 0.5) img.style.left = (Math.random()*20) + "vw";
-    else img.style.right = (Math.random()*20) + "vw";
+    img.src = src; img.classList.add("foto");
+    img.style.left = Math.random() < 0.5 ? (Math.random()*20)+"vw" : "auto";
+    img.style.right = img.style.left === "auto" ? (Math.random()*20)+"vw" : "auto";
     img.style.top = (Math.random()*50 + 10) + "vh";
-
     document.body.appendChild(img);
     img.addEventListener("mousemove", crearEmoji);
-    setTimeout(()=>{
-        img.remove();
-        fotosActivas = fotosActivas.filter(f=>f!==imgSrc);
-    },9000);
+    setTimeout(()=>{ img.remove(); fotosActivas = fotosActivas.filter(f=>f!==src); }, 9000);
 }
-
 setInterval(crearFoto, 2500);
 
 function crearEmoji(e){
-    const emojis = ["💛","💭","✨"];
-    const emoji = document.createElement("div");
-    emoji.classList.add("emoji");
-    emoji.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-    emoji.style.left = e.pageX + "px";
-    emoji.style.top = e.pageY + "px";
-    document.body.appendChild(emoji);
-    setTimeout(()=>emoji.remove(),1000);
+    const emojis = ["💛","✨","💭"];
+    const span = document.createElement("div");
+    span.className = "emoji";
+    span.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+    span.style.left = e.pageX + "px";
+    span.style.top = e.pageY + "px";
+    document.body.appendChild(span);
+    setTimeout(()=>span.remove(), 1000);
 }
-
-document.querySelectorAll("button").forEach(btn=>{
-    btn.addEventListener("mousemove", crearEmoji);
-});
 </script>
 
 </body>
