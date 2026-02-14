@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ti 💛</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ffd6e8, #fff3b0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 90%;
+}
+
+h1 {
+    margin-bottom: 10px;
+    color: #ff6b9d;
+}
+
+p {
+    color: #555;
+}
+
+.image {
+    margin: 20px 0;
+}
+
+.image img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.video-space {
+    margin-top: 20px;
+    background: #f4f4f4;
+    height: 200px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 14px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    background: #ff6b9d;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff4f87;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Para Ti 💛</h1>
+    <p>Así como ellos… yo quiero abrazarte siempre.</p>
+
+    <div class="image">
+        <!-- Aquí puedes poner la imagen si quieres -->
+        <img src="TU-IMAGEN-AQUI.jpg" alt="Nuestros personajes">
+    </div>
+
+    <!-- ESPACIO PARA EL VIDEO -->
+    <div class="video-space">
+        Aquí irá nuestro video especial 🎥💛
+    </div>
+
+    <button onclick="mostrarMensaje()">Tócame 💛</button>
+
+    <p id="mensaje" style="margin-top:15px; display:none;">
+        Gracias por existir. Eres mi lugar favorito en el mundo.
+    </p>
+</div>
+
+<script>
+function mostrarMensaje() {
+    document.getElementById("mensaje").style.display = "block";
+}
+</script>
+
+</body>
+</html>
